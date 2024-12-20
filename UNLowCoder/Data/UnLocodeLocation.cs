@@ -46,4 +46,7 @@ public class UnLocodeLocation
     }
 
     public string FullUnLocode => CountryCode + LocationCode;
+
+    public double? DistanceTo(Coordinates target) => Coordinates?.DistanceTo(target);
+    public double? DistanceTo(UnLocodeLocation target) => DistanceTo(target?.Coordinates);
 }

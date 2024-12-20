@@ -25,25 +25,25 @@ public class UnLocodeGenerator : ISourceGenerator
 
             var namespaceResolver = new NamespaceResolver(file.Path, context.Compilation.AssemblyName, context.AnalyzerConfigOptions.GlobalOptions.TryGetValue);
             try
-            {
+            {                
+                var countries = UnLocodeParser.ParseZipArchive(file.Path, true).Take(2).ToList();
+                countries.ForEach(c =>
+                {
+                    c.Locations = c.Locations.Take(2).ToList();
+                    c.Subdivisions = c.Subdivisions.Take(2).ToList();
+                } );
                 // r
-                var countries = UnLocodeParser.ParseZipArchive(file.Path).Take(2).ToList();
                 var ctx = new GeneratorDataContext(file, countries, namespaceResolver);
 
-                // 1) Hauptdatei generieren: loc241csv.g.cs
-                //   public partial class loc241csv { public static partial class Countries {} public static partial class Subdivisions {} public static partial class Locations {} }
                 var mainSource = codeGenerator.CreateMainClass(ctx);
                 context.AddSource(ctx.GeneratedClassName + ".g.cs", mainSource);
 
-                // 2) Countries Datei: loc241csv.Countries.g.cs
                 var countriesSource = codeGenerator.CreateCountriesClass(ctx);
                 context.AddSource(ctx.GeneratedClassName + ".Countries.g.cs", countriesSource);
 
-                // 3) Subdivisions Datei: loc241csv.Subdivisions.g.cs
                 var subdivisionsSource = codeGenerator.CreateSubdivisionsClass(ctx);
                 context.AddSource(ctx.GeneratedClassName + ".Subdivisions.g.cs", subdivisionsSource);
 
-                // 4) Locations Datei: loc241csv.Locations.g.cs
                 var locationsSource = codeGenerator.CreateLocationsClass(ctx);
                 context.AddSource(ctx.GeneratedClassName + ".Locations.g.cs", locationsSource);
 

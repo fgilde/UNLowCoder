@@ -14,10 +14,10 @@ public class Coordinates
     }
 
     /// <summary>
-    /// Berechnet die Distanz zwischen dieser Koordinate und einer Zielkoordinate in Kilometern
-    /// unter Verwendung der Haversine-Formel.
+    /// Calculates the distance between this coordinate and a target coordinate in kilometers
+    /// using the Haversine formula.
     /// </summary>
-    public double CalculateDistanceTo(Coordinates target)
+    public double DistanceTo(Coordinates target)
     {
         // Radius der Erde in Kilometern
         const double EarthRadiusKm = 6371.0;

@@ -7,8 +7,8 @@ public record UnLocodeCountry
 {
     public string CountryCode { get; }
     public string? CountryName { get; }
-    public IReadOnlyList<UnLocodeSubdivision> Subdivisions { get; }
-    public IReadOnlyList<UnLocodeLocation> Locations { get; }
+    public IReadOnlyList<UnLocodeSubdivision> Subdivisions { get; set; }
+    public IReadOnlyList<UnLocodeLocation> Locations { get; set; }
 
     public UnLocodeCountry(
         string countryCode,

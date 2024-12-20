@@ -18,6 +18,8 @@ namespace UNLowCoder.SourceGen
             this.GeneratedClassName = Path.GetFileNameWithoutExtension(originFile.Path);
             this.GeneratedFileName = $"{this.GeneratedClassName}.g.cs";
             this.Namespace = namespaceResolver.Resolve();
+            if(Namespace.EndsWith("."))
+                Namespace = Namespace.Substring(0, Namespace.Length - 1);
         }
     }
 }

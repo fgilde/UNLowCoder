@@ -4,8 +4,8 @@ using UNLowCoder;
 using UNLowCoder.Lib;
 
 
-
-var codes = UnLocodeParser.ParseZipArchive("C:\\Users\\fgild\\Downloads\\loc241csv.zip");
+var countries = UNLowCoder.Lib.UnLocodes.Countries.All;
+var codes = UnLocodeParser.ParseZipArchive("C:\\Users\\fgild\\Downloads\\loc241csv.zip", true);
 var germans = codes.Where(c => c.CountryCode == "DE").ToList();
 var firstLocation = germans.First().Locations.First();
 
