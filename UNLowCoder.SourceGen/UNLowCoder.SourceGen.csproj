@@ -35,8 +35,8 @@
     <!-- Verweis auf dein Core-Projekt -->    
     <ProjectReference Include="..\UNLowCoder\UNLowCoder.Core.csproj" />
     
-    <None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
-    <None Include="$(PkgNewtonsoft_Json)\lib\netstandard2.0\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+    <!--<None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+    <None Include="$(PkgNewtonsoft_Json)\lib\netstandard2.0\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />-->
   </ItemGroup>
 
 
@@ -55,13 +55,8 @@
       <TargetPathWithTargetPlatformMoniker Include="$(PkgNewtonsoft_Json)\lib\netstandard2.0\*.dll" IncludeRuntimeDependency="false" />
     </ItemGroup>
   </Target>
-  
-  <!-- Nach dem Build-Target fügen wir die Abhängigkeiten als AnalyzerAssembly ein -->
+    
   <Target Name="AddAnalyzerAssemblies" AfterTargets="Build">
-    <!-- Hier musst du den Pfad anpassen, je nach dem in welchen lib-Ordnern die DLLs liegen.
-         CsvHelper ist meist in netstandard2.0 verfügbar.
-         UTF.Unknown je nach Verfügbarkeit ebenfalls. 
-         Prüfe den realen Pfad in deinem NuGet-Paket-Cache. -->
     <ItemGroup>
       <AnalyzerAssembly Include="$(PkgCsvHelper)\lib\netstandard2.0\CsvHelper.dll" />
       <AnalyzerAssembly Include="$(PkgUTF_Unknown)\lib\netstandard2.0\UTF.Unknown.dll" />

@@ -10,7 +10,7 @@ namespace UNLowCoder.SourceGen
         public IReadOnlyList<UnLocodeCountry> Countries { get; set; }
         public string GeneratedFileName { get; set; }
         public string GeneratedClassName { get; set; }
-
+        
         public GeneratorDataContext(AdditionalText originFile, List<UnLocodeCountry> countries, NamespaceResolver namespaceResolver)
         {            
             this.OriginFilePath = originFile.Path;

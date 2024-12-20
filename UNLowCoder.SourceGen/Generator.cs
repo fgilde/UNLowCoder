@@ -25,16 +25,21 @@ public class UnLocodeGenerator : ISourceGenerator
 
             var namespaceResolver = new NamespaceResolver(file.Path, context.Compilation.AssemblyName, context.AnalyzerConfigOptions.GlobalOptions.TryGetValue);
             try
-            {                
-                var countries = UnLocodeParser.ParseZipArchive(file.Path, true).Take(2).ToList();
-                countries.ForEach(c =>
-                {
-                    c.Locations = c.Locations.Take(2).ToList();
-                    c.Subdivisions = c.Subdivisions.Take(2).ToList();
-                } );
-                // r
+            {
+                // code for testing to have less entries
+                //int count = 3;
+                //var countries = UnLocodeParser.ParseZipArchive(file.Path, true).Take(count).ToList();
+                //countries.ForEach(c =>
+                //{
+                //    c.Locations = c.Locations.Take(count).ToList();
+                //    c.Subdivisions = c.Subdivisions.Take(count).ToList();
+                //});
+
+                int x = 1;
+                var countries = UnLocodeParser.ParseZipArchive(file.Path, true);
                 var ctx = new GeneratorDataContext(file, countries, namespaceResolver);
 
+                
                 var mainSource = codeGenerator.CreateMainClass(ctx);
                 context.AddSource(ctx.GeneratedClassName + ".g.cs", mainSource);
 
