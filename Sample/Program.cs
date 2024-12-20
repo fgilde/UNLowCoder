@@ -12,6 +12,6 @@ var firstLocation = germans.First().Locations.First();
 var allHH = germans.First().Locations.Where(l => l.Name.Contains("Hamburg", StringComparison.InvariantCultureIgnoreCase)).ToList();
 var anotherLocation = allHH.First();
 
-var distance = firstLocation.Coordinates.CalculateDistanceTo(anotherLocation.Coordinates);
+var distance = firstLocation.DistanceTo(anotherLocation);
 
 Console.ReadLine();

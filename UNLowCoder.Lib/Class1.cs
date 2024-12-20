@@ -2,10 +2,9 @@
 
 namespace UNLowCoder.Lib
 {
-    public partial class loc241csv
-    {
-        public static partial class Countries { }
-        public static partial class Subdivisions { }
-        public static partial class Locations { }
-    }
+    /// <summary>
+    /// Empty class to allow the namespace to be used in the project.
+    /// </summary>
+    internal class Empty
+    { }
 }

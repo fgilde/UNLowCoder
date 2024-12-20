@@ -49,9 +49,9 @@ public class UnLocodeGenerator : ISourceGenerator
 
 
                 File.WriteAllText("D:\\test" + ctx.GeneratedFileName, mainSource.ToString());
-                File.WriteAllText("D:\\test" + ctx.GeneratedFileName + ".Countries.g.cs", countriesSource.ToString());
-                File.WriteAllText("D:\\test" + ctx.GeneratedFileName + ".Subdivisions.g.cs", subdivisionsSource.ToString());
-                File.WriteAllText("D:\\test" + ctx.GeneratedFileName + ".Locations.g.cs", locationsSource.ToString());
+                File.WriteAllText("D:\\test" + ctx.GeneratedClassName + ".Countries.g.cs", countriesSource.ToString());
+                File.WriteAllText("D:\\test" + ctx.GeneratedClassName + ".Subdivisions.g.cs", subdivisionsSource.ToString());
+                File.WriteAllText("D:\\test" + ctx.GeneratedClassName + ".Locations.g.cs", locationsSource.ToString());
             }
             catch (Exception e)
             {
