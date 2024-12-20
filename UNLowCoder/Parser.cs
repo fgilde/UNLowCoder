@@ -1,8 +1,15 @@
-﻿using UtfUnknown;
+﻿using System;
+using System.Collections.Generic;
+using UtfUnknown;
 using System.Globalization;
+using System.IO;
 using System.IO.Compression;
+using System.Linq;
 using System.Text;
 using CsvHelper;
+using UNLowCoder.Core.Data;
+using StringComparison = System.StringComparison;
+using StringSplitOptions = System.StringSplitOptions;
 
 namespace UNLowCoder;
 
@@ -212,12 +219,12 @@ public static class UnLocodeParser
 
     private static Coordinates? ParseCoordinates(string coords)
     {
-        var parts = coords.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+        var parts = coords.Split([' '], StringSplitOptions.RemoveEmptyEntries);
         if (parts.Length < 2) return null;
 
         double ParseCoordPart(string part)
         {
-            char dir = part[^1];
+            char dir = part[part.Length - 1];
             var numericPart = part.Substring(0, part.Length - 1);
 
             int degreeLength = numericPart.Length > 4 ? 3 : 2;
