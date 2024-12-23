@@ -7,6 +7,7 @@ namespace UNLowCoder.SourceGen
     {
         public string OriginFilePath { get; set; }
         public string Namespace { get; set; }
+        public string CoreDataNamespace => typeof(UnLocodeCountry).Namespace;
         public IReadOnlyList<UnLocodeCountry> Countries { get; set; }
         public string GeneratedFileName { get; set; }
         public string GeneratedClassName { get; set; }

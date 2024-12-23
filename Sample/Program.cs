@@ -4,13 +4,24 @@ using UNLowCoder;
 using UNLowCoder.Lib;
 
 
-
+Console.WriteLine("Hello, World!");
 //var countries = UNLowCoder.Lib.UnLocodes.Countries.AllX;
 //var loc = UNLowCoder.Lib.UnLocodes.Locations.ADCAN;
-var countries = UNLowCoder.Lib.UnLocodes.Countries.All;
-var locations = UNLowCoder.Lib.UnLocodes.Locations.All;
-var country = UNLowCoder.Lib.UnLocodes.Countries.DE;
-var subHH = UNLowCoder.Lib.UnLocodes.Subdivisions.DE_HH;
+var countries = UnLocodes.Countries.All;
+
+var c = countries[3];
+var c2 = countries[3];
+
+var equal = c.Equals(c2);
+var equal2 = c == c2;
+
+var germanLocations = UnLocodes.Locations.DE.All;
+var allL = UnLocodes.Locations.All;
+var allD = UnLocodes.Subdivisions.All;
+var hh = UnLocodes.Subdivisions.DE.DE_HH;
+
+
+
 var codes = UnLocodeParser.ParseZipArchive("C:\\Users\\fgild\\Downloads\\loc241csv.zip", true);
 var germans = codes.Where(c => c.CountryCode == "DE").ToList();
 var firstLocation = germans.First().Locations.First();

@@ -15,7 +15,7 @@
     <AdditionalFiles Include="UnLocodes.zip" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="GeneratedFiles\UNLowCoder.SourceGen\UnLocodeGenerator\" />
+    <Folder Include="GeneratedFiles\UNLowCoder.SourceGen\" />
   </ItemGroup>
 
 </Project>
