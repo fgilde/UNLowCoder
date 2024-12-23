@@ -21,15 +21,15 @@ namespace UNLowCoder.SourceGen
             sb.AppendLine("    public static partial class Countries {}");
             sb.AppendLine("    public static partial class Subdivisions");
             sb.AppendLine("    {");
-            sb.AppendLine("        public static System.Collections.Generic.IReadOnlyList<UnLocodeSubdivision> All => new[] {")
-              .Append(string.Join(", ", context.Countries.Select(c => $"{context.Namespace}.{context.GeneratedClassName}.Subdivisions.{SafeIdentifier(c.CountryCode)}.All")))
+            sb.AppendLine("        public static System.Collections.Generic.IReadOnlyList<UnLocodeSubdivision> "+context.AllPropertyName+" => new[] {")
+              .Append(string.Join(", ", context.Countries.Select(c => $"{context.Namespace}.{context.GeneratedClassName}.Subdivisions.{SafeIdentifier(c.CountryCode)}.{context.AllPropertyName}")))
               .Append("}.SelectMany(x => x).ToArray();");
 
             sb.AppendLine("    }");
             sb.AppendLine("    public static partial class Locations");
             sb.AppendLine("    {");
-            sb.AppendLine("        public static System.Collections.Generic.IReadOnlyList<UnLocodeLocation> All => new[] {")
-              .Append(string.Join(", ", context.Countries.Select(c => $"{context.Namespace}.{context.GeneratedClassName}.Locations.{SafeIdentifier(c.CountryCode)}.All")))
+            sb.AppendLine("        public static System.Collections.Generic.IReadOnlyList<UnLocodeLocation> "+context.AllPropertyName+" => new[] {")
+              .Append(string.Join(", ", context.Countries.Select(c => $"{context.Namespace}.{context.GeneratedClassName}.Locations.{SafeIdentifier(c.CountryCode)}.{context.AllPropertyName}")))
               .Append("}.SelectMany(x => x).ToArray();");
             sb.AppendLine("    }");
             sb.AppendLine("}");
@@ -59,13 +59,13 @@ namespace UNLowCoder.SourceGen
                 sb.AppendLine($"        public static UnLocodeCountry {identifier} => new UnLocodeCountry(");
                 sb.AppendLine($"            \"{Escape(country.CountryCode)}\",");
                 sb.AppendLine($"            {EscapeString(country.CountryName)},");
-                sb.AppendLine($"            {context.Namespace}.{context.GeneratedClassName}.Subdivisions.{identifier}.All,");
-                sb.AppendLine($"            {context.Namespace}.{context.GeneratedClassName}.Locations.{identifier}.All");
+                sb.AppendLine($"            {context.Namespace}.{context.GeneratedClassName}.Subdivisions.{identifier}.{context.AllPropertyName},");
+                sb.AppendLine($"            {context.Namespace}.{context.GeneratedClassName}.Locations.{identifier}.{context.AllPropertyName}");
                 sb.AppendLine("        );");
             }
 
             // Get method for CultureInfo
-            sb.AppendLine("        public static UnLocodeCountry Get(System.Globalization.CultureInfo culture)");
+            sb.AppendLine($"        public static UnLocodeCountry {context.GetMethodName}(System.Globalization.CultureInfo culture)");
             sb.AppendLine("        {");
             sb.AppendLine("            if (culture == null) return null;");
             sb.AppendLine("            if (!culture.IsNeutralCulture) culture = culture.Parent;");
@@ -73,14 +73,14 @@ namespace UNLowCoder.SourceGen
             sb.AppendLine("        }");
 
             // Get method for RegionInfo
-            sb.AppendLine("        public static UnLocodeCountry Get(System.Globalization.RegionInfo region)");
+            sb.AppendLine($"        public static UnLocodeCountry {context.GetMethodName}(System.Globalization.RegionInfo region)");
             sb.AppendLine("        {");
             sb.AppendLine("            if (region == null) return null;");
             sb.AppendLine("            return All.FirstOrDefault(c => c?.RegionInfo?.TwoLetterISORegionName?.Equals(region.TwoLetterISORegionName, StringComparison.InvariantCultureIgnoreCase) == true);");
             sb.AppendLine("        }");
 
             // Get method for string (Code or Name)
-            sb.AppendLine("        public static UnLocodeCountry Get(string codeOrName)");
+            sb.AppendLine($"        public static UnLocodeCountry {context.GetMethodName}(string codeOrName)");
             sb.AppendLine("        {");
             sb.AppendLine("            if (string.IsNullOrWhiteSpace(codeOrName)) return null;");
             sb.AppendLine("            return All.FirstOrDefault(c => ");
@@ -88,7 +88,7 @@ namespace UNLowCoder.SourceGen
             sb.AppendLine("                c?.CountryName?.Equals(codeOrName, StringComparison.InvariantCultureIgnoreCase) == true);");
             sb.AppendLine("        }");
 
-            sb.AppendLine($"        public static System.Collections.Generic.IReadOnlyList<UnLocodeCountry> All => new[] {{ {string.Join(", ", allCountries)} }};");
+            sb.AppendLine($"        public static System.Collections.Generic.IReadOnlyList<UnLocodeCountry> {context.AllPropertyName} => new[] {{ {string.Join(", ", allCountries)} }};");
             sb.AppendLine("    }");
             sb.AppendLine("}");
             return SourceText.From(sb.ToString(), Encoding.UTF8);
@@ -133,7 +133,7 @@ namespace UNLowCoder.SourceGen
                     ? $"new[] {{ {string.Join(", ", allSubdivisions)} }}"
                     : "System.Array.Empty<UnLocodeSubdivision>()";
 
-                sb.AppendLine($"        public static System.Collections.Generic.IReadOnlyList<UnLocodeSubdivision> All => {allArray};");
+                sb.AppendLine($"        public static System.Collections.Generic.IReadOnlyList<UnLocodeSubdivision> {context.AllPropertyName} => {allArray};");
 
                 sb.AppendLine("    }");
             }
@@ -192,7 +192,7 @@ namespace UNLowCoder.SourceGen
                     ? $"new[] {{ {string.Join(", ", allLocations)} }}"
                     : "System.Array.Empty<UnLocodeLocation>()";
 
-                sb.AppendLine($"    public static System.Collections.Generic.IReadOnlyList<UnLocodeLocation> All => {allArray};");
+                sb.AppendLine($"    public static System.Collections.Generic.IReadOnlyList<UnLocodeLocation> {context.AllPropertyName} => {allArray};");
                 sb.AppendLine("}");
                 sb.AppendLine("}");
                 sb.AppendLine("}");

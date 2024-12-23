@@ -15,7 +15,6 @@ public class UnLocodeGenerator : ISourceGenerator
         if (!System.Diagnostics.Debugger.IsAttached)
             System.Diagnostics.Debugger.Launch();
 
-        int i = 2;
 
         if (!context.AdditionalFiles.Any())
         {
