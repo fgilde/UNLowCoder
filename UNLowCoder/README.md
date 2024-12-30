@@ -1,5 +1,5 @@
-﻿# UnLowCoder.Lib
-[![NuGet](https://img.shields.io/nuget/v/UNLowCoder.Lib)](https://www.nuget.org/packages/UNLowCoder.Lib/)
+﻿# UnLowCoder.Core
+[![NuGet](https://img.shields.io/nuget/v/UNLowCoder.Core)](https://www.nuget.org/packages/UNLowCoder.Core/)
 
 This package contains the core functionality to parse the UNLocode csv zip files.
 This package is used by the [UNLowCoder.SourceGen](https://www.nuget.org/packages/UNLowCoder.SourceGen/) and [UNLowCoder.Lib](https://www.nuget.org/packages/UNLowCoder.Lib/) 
