@@ -18,4 +18,4 @@ And a generated class library to easially use the UN/Locodes in your project.
 ## UNLowCoder.Lib
 [![NuGet](https://img.shields.io/nuget/v/UNLowCoder.Lib)](https://www.nuget.org/packages/UNLowCoder.Lib/)
 <br>
-[More Info](https://github.com/fgilde/UNLowCoder/tree/master/UNLowCoder.SourceGen)
+[More Info](https://github.com/fgilde/UNLowCoder/tree/master/UNLowCoder.Lib)
