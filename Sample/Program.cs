@@ -22,7 +22,7 @@ var hh = UnLocodes.Subdivisions.DE.DE_HH;
 
 
 
-var codes = UnLocodeParser.ParseZipArchive("C:\\Users\\fgild\\Downloads\\loc241csv.zip", true);
+var codes = UnLocodeParser.ParseZipArchive("C:\\Users\\fgild\\Downloads\\loc241csv.zip");
 var germans = codes.Where(c => c.CountryCode == "DE").ToList();
 var firstLocation = germans.First().Locations.First();
 

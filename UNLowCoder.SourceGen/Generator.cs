@@ -1,5 +1,6 @@
 ﻿using Microsoft.CodeAnalysis;
 using UNLowCoder;
+using UNLowCoder.Core;
 using UNLowCoder.SourceGen;
 
 [Generator]
@@ -36,7 +37,7 @@ public class UnLocodeGenerator : ISourceGenerator
 
             try
             {
-                var countries = UnLocodeParser.ParseZipArchive(file.Path, true);
+                var countries = UnLocodeParser.ParseZipArchive(file.Path, ParseMode.OnlyNewest);
                 var ctx = new GeneratorDataContext(file, countries, namespaceResolver);
 
                 // Main class
