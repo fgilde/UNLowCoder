@@ -7,6 +7,7 @@ namespace UNLowCoder.Lib
     /// </summary>
     internal class Empty
     {
+        // This just ensures files are generated and the namespace is available.
         void Test() { 
             var countries = UNLowCoder.Lib.UnLocodes.Countries.All;
         }
