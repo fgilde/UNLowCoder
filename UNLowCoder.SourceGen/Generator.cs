@@ -7,9 +7,7 @@ using UNLowCoder.SourceGen;
 public class UnLocodeGenerator : ISourceGenerator
 {
     public void Initialize(GeneratorInitializationContext context)
-    {
-        // Kein SyntaxReceiver notwendig
-    }
+    {}
 
     public void Execute(GeneratorExecutionContext context)
     {

@@ -17,6 +17,7 @@ var equal2 = c == c2;
 
 var germanLocations = UnLocodes.Locations.DE.All;
 var allL = UnLocodes.Locations.All;
+var locHH = UnLocodes.Locations.DE.HAM;
 var allD = UnLocodes.Subdivisions.All;
 var hh = UnLocodes.Subdivisions.DE.DE_HH;
 

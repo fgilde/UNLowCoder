@@ -56,8 +56,8 @@ public static class UnLocodeParser
 
         if (onlyNewest)
         {
-            // Subdivisions ohne Datum/Change: nur Duplikate filtern, falls welche vorkommen.
-            // Wir gruppieren nach (Country, SubCode) und behalten den zuletzt gelesenen Eintrag.
+            // Subdivisions without Date/Change: only filter duplicates if any occur.
+            // We group by (Country, SubCode) and keep the last read entry.
             foreach (var kvp in subdivisionsByCountry.ToList())
             {
                 var groupedSubs = kvp.Value
@@ -67,7 +67,7 @@ public static class UnLocodeParser
                 subdivisionsByCountry[kvp.Key] = groupedSubs;
             }
 
-            // Locations: nur den neuesten, gültigen Eintrag pro Country+LocationCode
+            // Locations: only newest entry Country+LocationCode
             foreach (var kvp in locationsByCountry.ToList())
             {
                 var grouped = kvp.Value
@@ -92,9 +92,9 @@ public static class UnLocodeParser
 
         var countries = new List<UnLocodeCountry>();
 
-        // Jetzt bauen wir die Länder zusammen
-        // Alle Subdivisions pro Land + Alle Locations pro Land
-        // Falls ein Land keine Subdivisions hat, nehmen wir eine leere Liste
+        // Now we build the countries together
+        // All subdivisions per country + all locations per country
+        // If a country has no subdivisions, we take an empty list
         foreach (var countryCode in locationsByCountry.Keys.OrderBy(c => c))
         {
             List<UnLocodeSubdivision> subs;
@@ -114,8 +114,8 @@ public static class UnLocodeParser
             countries.Add(countryObj);
         }
 
-        // Es kann sein, dass es Länder ohne Locations aber mit Subdivisions gibt.
-        // Die wären aktuell nicht erfasst. Also noch diese verarbeiten:
+        // It is possible that there are countries without locations but with subdivisions.
+        // These would currently not be recorded. So process these as well:
         foreach (var countryCode in subdivisionsByCountry.Keys)
             if (!locationsByCountry.ContainsKey(countryCode))
             {
