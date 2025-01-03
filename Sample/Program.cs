@@ -18,7 +18,10 @@ var shang = UnLocodes.Locations.All.FirstOrDefault(loc => loc.FullUnLocode == "C
 
 var currentCountry = UnLocodes.Countries.Get(CultureInfo.CurrentCulture);
 
-
+var gl = UnLocodes.Countries.GL;
+var broke = countries.Where(c => c.RegionInfo == null).ToList();
+var broke2 = countries.Where(c => c.CultureInfo == null).ToList();
+var broke3 = countries.Where(c => c.CountryInfo() == null).ToList();
 
 var all_sea_ports = all_countries.SelectMany(c => c.Locations).Where(loc => loc.Function == UNLowCoder.Core.Data.LocationFunction.Seaport).ToList();
 var air_ports = all_countries.SelectMany(c => c.Locations).Where(loc => loc.Function == UNLowCoder.Core.Data.LocationFunction.Airport).ToList();

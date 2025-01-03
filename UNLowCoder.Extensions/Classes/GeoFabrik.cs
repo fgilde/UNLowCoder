@@ -1,10 +1,5 @@
 ﻿namespace UNLowCoder.Extensions.Classes;
 
-public interface IOpenStreetMapPbfProvider
-{    
-    public string PbfUrl { get; }
-}
-
 public static class GeoFabrik
 {
     private const string URL = "https://download.geofabrik.de/{0}-latest.osm.pbf";

@@ -5,7 +5,8 @@ using UNLowCoder.Core.Data;
 
 namespace UNLowCoder.Extensions.Classes;
 
-public record ContinentInfo : IOpenStreetMapPbfProvider
+
+public record ContinentInfo 
 {
     public ContinentInfo(Region region) : this(region, SubRegion.None)
     { }

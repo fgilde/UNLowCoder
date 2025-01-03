@@ -91,7 +91,10 @@ public static class UnLocodeParser
         }
 
         var countries = new List<UnLocodeCountry>();
-
+        if(locationsByCountry.ContainsKey("Country"))
+            locationsByCountry.Remove("Country");
+        if(subdivisionsByCountry.ContainsKey("Country"))
+            subdivisionsByCountry.Remove("Country");
         // Now we build the countries together
         // All subdivisions per country + all locations per country
         // If a country has no subdivisions, we take an empty list
@@ -147,31 +150,29 @@ public static class UnLocodeParser
         var encoding = DetectEncoding(memoryStream);
         memoryStream.Position = 0;
 
-        using (var reader = new StreamReader(memoryStream, encoding))
-        using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
+        using var reader = new StreamReader(memoryStream, encoding);
+        using var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
+        while (csv.Read())
         {
-            while (csv.Read())
+            if (csv.Parser.Record == null || csv.Parser.Record.Length < 4)
+                continue;
+
+            var country = csv.GetField<string>(0);
+            var subCode = csv.GetField<string>(1);
+            var name = csv.GetField<string>(2);
+            var type = csv.GetField<string>(3);
+
+            if (string.IsNullOrEmpty(country) || string.IsNullOrEmpty(subCode))
+                continue;
+
+            var subdivision = new UnLocodeSubdivision(country, subCode, name, type);
+            if (!subdivisionsByCountry.TryGetValue(country, out var list))
             {
-                if (csv.Parser.Record.Length < 4)
-                    continue;
-
-                var country = csv.GetField<string>(0);
-                var subCode = csv.GetField<string>(1);
-                var name = csv.GetField<string>(2);
-                var type = csv.GetField<string>(3);
-
-                if (string.IsNullOrEmpty(country) || string.IsNullOrEmpty(subCode))
-                    continue;
-
-                var subdivision = new UnLocodeSubdivision(country, subCode, name, type);
-                if (!subdivisionsByCountry.TryGetValue(country, out var list))
-                {
-                    list = new List<UnLocodeSubdivision>();
-                    subdivisionsByCountry[country] = list;
-                }
-
-                list.Add(subdivision);
+                list = new List<UnLocodeSubdivision>();
+                subdivisionsByCountry[country] = list;
             }
+
+            list.Add(subdivision);
         }
     }
 
@@ -187,23 +188,16 @@ public static class UnLocodeParser
         if (string.IsNullOrEmpty(changeField))
             return ChangeIndicator.None;
 
-        switch (changeField)
+        return changeField switch
         {
-            case "+":
-                return ChangeIndicator.Added;
-            case "#":
-                return ChangeIndicator.NameChanged;
-            case "¤":
-                return ChangeIndicator.SubdivisionChanged;
-            case "X":
-                return ChangeIndicator.MarkedForDeletion;
-            case "*":
-                return ChangeIndicator.OtherChange;
-            case "=":
-                return ChangeIndicator.Unchanged;
-            default:
-                return ChangeIndicator.None;
-        }
+            "+" => ChangeIndicator.Added,
+            "#" => ChangeIndicator.NameChanged,
+            "¤" => ChangeIndicator.SubdivisionChanged,
+            "X" => ChangeIndicator.MarkedForDeletion,
+            "*" => ChangeIndicator.OtherChange,
+            "=" => ChangeIndicator.Unchanged,
+            _ => ChangeIndicator.None
+        };
     }
 
     private static void ParseCodeListFile(
@@ -218,75 +212,73 @@ public static class UnLocodeParser
         var encoding = DetectEncoding(memoryStream);
         memoryStream.Position = 0;
 
-        using (var reader = new StreamReader(memoryStream, encoding))
-        using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
+        using var reader = new StreamReader(memoryStream, encoding);
+        using var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
+        while (csv.Read())
         {
-            while (csv.Read())
+            var record = csv.Parser.Record;
+            if (record == null || record.Length < 12) continue;
+
+            var changeStr = GetSafeField(csv, 0);
+            var changeIndicator = ParseChangeIndicator(changeStr);
+            var country = GetSafeField(csv, 1);
+            var locationCode = GetSafeField(csv, 2);
+            var name = GetSafeField(csv, 3);
+            var nameWo = GetSafeField(csv, 4);
+            var subdivisionCode = GetSafeField(csv, 5);
+            var statusStr = GetSafeField(csv, 6);
+            var functionStr = GetSafeField(csv, 7);
+            var dateStr = GetSafeField(csv, 8);
+            var iata = GetSafeField(csv, 9);
+            var coordsString = GetSafeField(csv, 10);
+            var remarks = GetSafeField(csv, 11);
+
+            if (!string.IsNullOrEmpty(country) && !string.IsNullOrEmpty(name) && name.StartsWith("."))
             {
-                var record = csv.Parser.Record;
-                if (record == null || record.Length < 12) continue;
-
-                var changeStr = GetSafeField(csv, 0);
-                var changeIndicator = ParseChangeIndicator(changeStr);
-                var country = GetSafeField(csv, 1);
-                var locationCode = GetSafeField(csv, 2);
-                var name = GetSafeField(csv, 3);
-                var nameWo = GetSafeField(csv, 4);
-                var subdivisionCode = GetSafeField(csv, 5);
-                var statusStr = GetSafeField(csv, 6);
-                var functionStr = GetSafeField(csv, 7);
-                var dateStr = GetSafeField(csv, 8);
-                var iata = GetSafeField(csv, 9);
-                var coordsString = GetSafeField(csv, 10);
-                var remarks = GetSafeField(csv, 11);
-
-                if (!string.IsNullOrEmpty(country) && !string.IsNullOrEmpty(name) && name.StartsWith("."))
-                {
-                    var cn = name.TrimStart('.');
-                    if (!string.IsNullOrEmpty(cn)) countryNames[country] = cn;
-                    continue;
-                }
-
-                if (string.IsNullOrEmpty(locationCode) || string.IsNullOrEmpty(country))
-                    continue;
-
-                var coords = !string.IsNullOrEmpty(coordsString) ? ParseCoordinates(coordsString) : null;
-                var status = ParseStatus(statusStr);
-                var function = ParseFunction(functionStr);
-                var lastUpdate = ParseDate(dateStr);
-
-                var loc = new UnLocodeLocation(
-                    country,
-                    locationCode,
-                    name ?? string.Empty,
-                    nameWo ?? string.Empty,
-                    subdivisionCode,
-                    status,
-                    function,
-                    lastUpdate,
-                    iata,
-                    coords,
-                    remarks,
-                    changeIndicator
-                );
-
-                if (!locationsByCountry.TryGetValue(country, out var locList))
-                {
-                    locList = new List<UnLocodeLocation>();
-                    locationsByCountry[country] = locList;
-                }
-
-                locList.Add(loc);
+                var cn = name.TrimStart('.');
+                if (!string.IsNullOrEmpty(cn)) countryNames[country] = cn;
+                continue;
             }
+
+            if (string.IsNullOrEmpty(locationCode) || string.IsNullOrEmpty(country))
+                continue;
+
+            var coords = !string.IsNullOrEmpty(coordsString) ? ParseCoordinates(coordsString) : null;
+            var status = ParseStatus(statusStr);
+            var function = ParseFunction(functionStr);
+            var lastUpdate = ParseDate(dateStr);
+
+            var loc = new UnLocodeLocation(
+                country,
+                locationCode,
+                name ?? string.Empty,
+                nameWo ?? string.Empty,
+                subdivisionCode,
+                status,
+                function,
+                lastUpdate,
+                iata,
+                coords,
+                remarks,
+                changeIndicator
+            );
+
+            if (!locationsByCountry.TryGetValue(country, out var locList))
+            {
+                locList = new List<UnLocodeLocation>();
+                locationsByCountry[country] = locList;
+            }
+
+            locList.Add(loc);
         }
     }
 
     private static string GetSafeField(CsvReader csv, int index)
     {
-        if (index < csv.Parser.Record.Length)
+        if (csv.Parser.Record != null && index < csv.Parser.Record.Length)
         {
             var val = csv.GetField<string>(index);
-            return val == null ? null : val.Trim();
+            return val?.Trim();
         }
 
         return null;
