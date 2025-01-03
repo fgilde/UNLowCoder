@@ -1,7 +1,12 @@
-﻿namespace UNLowCoder.Core.Data;
+﻿using System;
 
-public class UnLocodeSubdivision
+namespace UNLowCoder.Core.Data;
+
+public partial record UnLocodeSubdivision
 {
+    public UnLocodeCountry Country => CountryResolverFunc?.Invoke();
+    public Func<UnLocodeCountry> CountryResolverFunc { get; set; }
+
     public string CountryCode { get; }
     public string SubdivisionCode { get; }
     public string Name { get; }

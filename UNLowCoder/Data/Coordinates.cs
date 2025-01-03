@@ -2,8 +2,10 @@
 
 namespace UNLowCoder.Core.Data;
 
-public class Coordinates
+public partial record Coordinates
 {
+    public const double EarthRadiusKm = 6371.0;
+
     public double Latitude { get; }
     public double Longitude { get; }
 
@@ -18,14 +20,11 @@ public class Coordinates
     /// using the Haversine formula.
     /// </summary>
     public double DistanceTo(Coordinates target)
-    {
-        // Radius der Erde in Kilometern
-        const double EarthRadiusKm = 6371.0;
-
-        double lat1Rad = ToRadians(this.Latitude);
+    {               
+        double lat1Rad = ToRadians(Latitude);
         double lat2Rad = ToRadians(target.Latitude);
-        double deltaLat = ToRadians(target.Latitude - this.Latitude);
-        double deltaLon = ToRadians(target.Longitude - this.Longitude);
+        double deltaLat = ToRadians(target.Latitude - Latitude);
+        double deltaLon = ToRadians(target.Longitude - Longitude);
 
         double a = Math.Sin(deltaLat / 2) * Math.Sin(deltaLat / 2) +
                    Math.Cos(lat1Rad) * Math.Cos(lat2Rad) *

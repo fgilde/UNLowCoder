@@ -10,6 +10,9 @@ For parsing this package uses the [UNLowCoder.Core](https://www.nuget.org/packag
 
 Implemented via [C# source generators](https://docs.microsoft.com/en-us/dotnet/csharp/roslyn-sdk/source-generators-overview)
 
+Also this package is used by [UNLowCoder.Lib](https://www.nuget.org/packages/UNLowCoder.Lib/) that provides the generated classes for the UNLocode csv files.
+
+
 ## Usage
 
 ### Install the nuget package

@@ -110,7 +110,8 @@ public static class UnLocodeParser
                 subs,
                 locs
             );
-
+            subs?.ForEach(s => s.CountryResolverFunc = () => countryObj);
+            locs?.ForEach(s => s.CountryResolverFunc = () => countryObj);
             countries.Add(countryObj);
         }
 
@@ -129,7 +130,7 @@ public static class UnLocodeParser
                     subs,
                     new List<UnLocodeLocation>()
                 );
-
+                subs?.ForEach(s => s.CountryResolverFunc = () => countryObj);
                 countries.Add(countryObj);
             }
 

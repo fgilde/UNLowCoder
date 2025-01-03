@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\UNLowCoder\UNLowCoder.Core.csproj" />    
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Itinero" Version="1.6.0-pre037" />
+    <PackageReference Include="Itinero.IO.Osm" Version="1.6.0-pre037" />
+    <PackageReference Include="Nager.Country" Version="4.0.0" />
+  </ItemGroup>
+  
+</Project>

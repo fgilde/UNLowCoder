@@ -12,9 +12,9 @@ public class UnLocodeGenerator : ISourceGenerator
     public void Execute(GeneratorExecutionContext context)
     {
         if (!System.Diagnostics.Debugger.IsAttached)
-            System.Diagnostics.Debugger.Launch();
+             System.Diagnostics.Debugger.Launch();
 
-        int i = 9;
+        int i = 2;
         if (!context.AdditionalFiles.Any())
         {
             context.ReportDiagnostic(Diagnostic.Create(
@@ -44,11 +44,11 @@ public class UnLocodeGenerator : ISourceGenerator
 
                 // Countries
                 var countriesSource = codeGenerator.CreateCountriesClass(ctx);
-                context.AddSource(ctx.GeneratedClassName + ".Countries.g.cs", countriesSource);
+                context.AddSource(ctx.GeneratedClassName + $".{ctx.StaticCountriesClassName}.g.cs", countriesSource);
 
                 // Subdivisions
                 var subdivisionsSource = codeGenerator.CreateSubdivisionsClass(ctx);
-                context.AddSource(ctx.GeneratedClassName + ".Subdivisions.g.cs", subdivisionsSource);
+                context.AddSource(ctx.GeneratedClassName + $".{ctx.StaticDivisionsClassName}.g.cs", subdivisionsSource);
 
                 // Locations (Chunked by country)
                 var locationChunks = codeGenerator.CreateLocationChunks(ctx);

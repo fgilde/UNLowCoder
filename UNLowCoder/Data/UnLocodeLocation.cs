@@ -2,8 +2,11 @@
 
 namespace UNLowCoder.Core.Data;
 
-public class UnLocodeLocation
+public partial record UnLocodeLocation
 {
+    public UnLocodeCountry Country => CountryResolverFunc?.Invoke();
+    public Func<UnLocodeCountry> CountryResolverFunc { get; set; }
+
     public string CountryCode { get; }
     public string LocationCode { get; }
     public string Name { get; }
@@ -16,6 +19,7 @@ public class UnLocodeLocation
     public Coordinates? Coordinates { get; }
     public string? Remarks { get; }
     public ChangeIndicator Change { get; }
+
 
     public UnLocodeLocation(
         string countryCode,

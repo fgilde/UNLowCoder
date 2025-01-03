@@ -13,7 +13,14 @@ namespace UNLowCoder.SourceGen
         public IReadOnlyList<UnLocodeCountry> Countries { get; set; }
         public string GeneratedFileName { get; set; }
         public string GeneratedClassName { get; set; }
-        
+        public string FullGeneratedClassName => $"{Namespace}.{GeneratedClassName}";
+        public string CountryClass => nameof(UnLocodeCountry);
+        public string LocationClass => nameof(UnLocodeLocation);
+        public string DivisionClass => nameof(UnLocodeSubdivision);
+        public string StaticCountriesClassName { get; set; } = "Countries";
+        public string StaticLocationsClassName { get; set; } = "Locations";
+        public string StaticDivisionsClassName { get; set; } = "Subdivisions";
+
         public GeneratorDataContext(AdditionalText originFile, List<UnLocodeCountry> countries, NamespaceResolver namespaceResolver)
         {            
             this.OriginFilePath = originFile.Path;

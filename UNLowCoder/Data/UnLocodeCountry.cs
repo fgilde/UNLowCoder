@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using Nextended.Core.Types;
+using System.Collections.Generic;
 using System.Globalization;
 
 namespace UNLowCoder.Core.Data;
 
-public record UnLocodeCountry
+public partial record UnLocodeCountry
 {
     public string CountryCode { get; }
     public string? CountryName { get; }
@@ -22,6 +23,9 @@ public record UnLocodeCountry
         Locations = locations;
     }
 
+    private Currency? _currency;
+    public Currency? Currency => RegionInfo != null ? (_currency ??= Currency.Find(RegionInfo.CurrencySymbol) ?? Currency.Find(RegionInfo.ISOCurrencySymbol)) : null;
+
     private RegionInfo? _regionInfo;
     public RegionInfo? RegionInfo
     {
@@ -35,7 +39,7 @@ public record UnLocodeCountry
                 }
                 catch
                 {
-                    _regionInfo = null; // falls ungültiger Code
+                    _regionInfo = null; 
                 }
             }
             return _regionInfo;
