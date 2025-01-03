@@ -177,7 +177,8 @@ namespace UNLowCoder.SourceGen
 
                 var allLocations = new List<string>();
                 foreach (var loc in country.Locations)
-                {
+                {                    
+                    var funcArgStr = string.Join(" | ", loc.Function.ToString().Split(',').Select(f => $"{nameof(LocationFunction)}.{f}"));
                     var identifier = SafeIdentifier(loc.LocationCode);
                     var privateFieldIdentifier = $"__pField_{identifier}";
                     allLocations.Add(identifier);
@@ -191,7 +192,7 @@ namespace UNLowCoder.SourceGen
                     sb.AppendLine($"        {EscapeString(loc.SubdivisionCode)},");
 
                     sb.AppendLine($"        {nameof(LocationStatus)}.{loc.Status},");
-                    sb.AppendLine($"        {nameof(LocationFunction)}.{loc.Function},");
+                    sb.AppendLine($"        {funcArgStr},");
                     sb.AppendLine($"        {FormatDate(loc.LastUpdateDate)},");
                     sb.AppendLine($"        {EscapeString(loc.IATA)},");
 

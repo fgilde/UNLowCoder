@@ -334,18 +334,19 @@ public static class UnLocodeParser
         return LocationStatus.Unknown;
     }
 
+
     private static LocationFunction ParseFunction(string functionStr)
     {
-        if (string.IsNullOrEmpty(functionStr))
+        if (string.IsNullOrEmpty(functionStr) || functionStr.Length < 7)
             return LocationFunction.None;
 
         var func = LocationFunction.None;
-
-        for (var i = 0; i < functionStr.Length && i < 7; i++)
+        for (var i = 0; i < 7; i++)
         {
-            var c = functionStr[i];
-            if (c == '1')
-                func |= (LocationFunction) (1 << i);
+            if (char.IsDigit(functionStr[i]) && int.Parse(functionStr[i].ToString()) > 0)
+            {
+                func |= (LocationFunction)(1 << i);
+            }
         }
 
         return func;

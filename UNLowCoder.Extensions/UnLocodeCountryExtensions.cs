@@ -14,16 +14,33 @@ namespace UNLowCoder.Extensions
 {
     public static class UnLocodeCountryExtensions
     {
-        public static ICountryInfo CountryInfo(this UnLocodeCountry country)
+        public static ICountryInfo? CountryInfo(this UnLocodeCountry country)
         {
-            ICountryProvider countryProvider = new CountryProvider();
-            return countryProvider.GetCountry(country.CountryCode);
+            try
+            {
+                ICountryProvider countryProvider = new CountryProvider();
+                return countryProvider.GetCountry(country.CountryCode);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
 
         /// <summary>
         /// Continent
         /// </summary>
-        public static ContinentInfo Continent(this UnLocodeCountry country) => new(country);
+        public static ContinentInfo? Continent(this UnLocodeCountry country)
+        {
+            try
+            {
+                return new ContinentInfo(country);
+            }
+            catch (Exception )
+            {
+                return null;
+            }
+        }
 
         internal static string Slug(this UnLocodeCountry country)
         {
