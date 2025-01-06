@@ -1,10 +1,13 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 
 namespace UNLowCoder.Core.Data;
 
 public partial record UnLocodeLocation
 {
+    [JsonIgnore]    
     public UnLocodeCountry Country => CountryResolverFunc?.Invoke();
+    [JsonIgnore]
     public Func<UnLocodeCountry> CountryResolverFunc { get; set; }
 
     public string CountryCode { get; }
@@ -20,6 +23,8 @@ public partial record UnLocodeLocation
     public string? Remarks { get; }
     public ChangeIndicator Change { get; }
 
+    public UnLocodeLocation()
+    { }
 
     public UnLocodeLocation(
         string countryCode,

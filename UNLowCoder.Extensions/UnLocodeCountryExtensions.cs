@@ -27,21 +27,6 @@ namespace UNLowCoder.Extensions
             }
         }
 
-        /// <summary>
-        /// Continent
-        /// </summary>
-        public static ContinentInfo? Continent(this UnLocodeCountry country)
-        {
-            try
-            {
-                return new ContinentInfo(country);
-            }
-            catch (Exception )
-            {
-                return null;
-            }
-        }
-
         internal static string Slug(this UnLocodeCountry country)
         {
 
@@ -61,7 +46,7 @@ namespace UNLowCoder.Extensions
 
         }
 
-        public static string PbfUrl(this UnLocodeCountry country) => GeoFabrik.PbfUrl(country.Continent().OsmRegion, country.Slug());
+        public static string PbfUrl(this UnLocodeCountry country) => GeoFabrik.PbfUrl(country.CountryInfo().OsmRegionName(), country.Slug());
 
         /// <summary>
         /// Lädt (falls nötig) die PBF-Datei herunter und baut eine RouterDb (Itinero)
@@ -94,13 +79,10 @@ namespace UNLowCoder.Extensions
                 // httpClient mit Timeout (z.B. 2 Stunden)
                 using var httpClient = new HttpClient { Timeout = TimeSpan.FromHours(2) };
 
-                // Stream vom Server holen (direktes Streaming)
+                //using var contentStream = await httpClient.GetStreamInChunksAsync(pbfUrl, 1024 * 1024);
+                //using var contentStream = await httpClient.GetStreamInTaskChunksAsync(pbfUrl, 10);
                 using var contentStream = await httpClient.GetStreamAsync(pbfUrl);
-
-                // Lokale Datei öffnen (oder anlegen)
                 using var fileStream = File.Create(pbfLocalFile);
-
-                // Daten vom HTTP-Stream in die lokale Datei kopieren
                 await contentStream.CopyToAsync(fileStream);
             }
 

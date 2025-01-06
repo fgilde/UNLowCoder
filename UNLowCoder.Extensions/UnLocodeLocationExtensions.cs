@@ -30,5 +30,5 @@ public static class UnLocodeLocationExtensions
         return router.Resolve(profile, coordinates.ToItineroCoordinate());
     }
 
-    public static Coordinate ToItineroCoordinate(this Coordinates coordinates) => new Coordinate((float)coordinates.Latitude, (float)coordinates.Longitude);
+    public static Coordinate ToItineroCoordinate(this Coordinates coordinates) => new((float)coordinates.Latitude, (float)coordinates.Longitude);
 }

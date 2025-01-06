@@ -11,10 +11,10 @@ public class UnLocodeGenerator : ISourceGenerator
 
     public void Execute(GeneratorExecutionContext context)
     {
-        if (!System.Diagnostics.Debugger.IsAttached)
-             System.Diagnostics.Debugger.Launch();
+        //if (!System.Diagnostics.Debugger.IsAttached)
+        //     System.Diagnostics.Debugger.Launch();
 
-        int i = 11;
+        
         if (!context.AdditionalFiles.Any())
         {
             context.ReportDiagnostic(Diagnostic.Create(
