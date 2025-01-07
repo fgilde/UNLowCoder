@@ -18,6 +18,7 @@ Console.WriteLine("Hello, World!");
 
 
 var all_countries = UnLocodes.Countries.All;
+var pfaaa = UnLocodes.Locations.PF.AAA;
 var countries = UnLocodeParser.ParseZipArchive("C:\\Users\\fgild\\Downloads\\loc241csv.zip");
 var iatas = UnLocodes.Locations.All.Where(l => !string.IsNullOrEmpty(l.IATA)).ToList();
 var germanyAndGb = countries.Filter(Alpha2Code.DE, Alpha2Code.GB).ToList();
@@ -39,10 +40,10 @@ var munden = UnLocodes.Locations.DE.MUD;
 var munich = UnLocodes.Locations.DE.MUN;
 
 
-var ci = currentCountry.CountryInfo();
+ICountryInfo? ci = currentCountry.CountryInfo();
 var borderOfGer = countries.Filter(ci.BorderCountries);
 
-var routerDE = await currentCountry.BuildRouterAsync("TEST");
+var routerDE = await munden.Country.BuildRouterAsync("TEST");
 
 var profile = Itinero.Osm.Vehicles.Vehicle.Car.Fastest();
 //var profile = Ship.Instance.Profile;

@@ -3,8 +3,29 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <LangVersion>latest</LangVersion>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+  </PropertyGroup>
+  
+  <PropertyGroup>
+    <Title>UNLowCoder.Extensions</Title>
+    <PackageId>UNLowCoder.Extensions</PackageId>
+    <PackageVersion>0.0.3</PackageVersion>
+    <Authors>fgilde</Authors>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <RepositoryType>Git</RepositoryType>
+    <RepositoryUrl>https://github.com/fgilde/UnLowCoder</RepositoryUrl>
+    <Description>Extension methods for the UNECE UN/Locodes</Description>
+    <Copyright>Copyright © $(Authors) 2020-$([System.DateTime]::Now.Year)</Copyright>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageTags>Unlocode, Unece, Class library</PackageTags>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <BaseOutputPath>..\bin</BaseOutputPath>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Include="README.md" Pack="true" PackagePath="README.md" />
+  </ItemGroup>
+  
   <ItemGroup>
     <ProjectReference Include="..\UNLowCoder\UNLowCoder.Core.csproj" />    
   </ItemGroup>
