@@ -1,8 +1,10 @@
-﻿using System.Collections.Concurrent;
+﻿using System;
+using System.Collections.Concurrent;
+using System.Net.Http;
 
-namespace Sample;
+namespace UNLowCoder.Core;
 
-public class SimpleHttpFactory: IHttpClientFactory
+internal class SimpleHttpFactory: IHttpClientFactory
 {
     private ConcurrentDictionary<string, HttpClient> _clients = new();
 

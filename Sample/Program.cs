@@ -9,8 +9,8 @@ using Nominatim.API.Geocoders;
 using Nominatim.API.Interfaces;
 using Nominatim.API.Models;
 using Nominatim.API.Web;
-using Sample;
 using UNLowCoder;
+using UNLowCoder.Core;
 using UNLowCoder.Extensions;
 using UNLowCoder.Lib;
 
@@ -23,39 +23,27 @@ var withCoordinates = UnLocodes.Locations.All
     .Where(l => l.Coordinates != null)
     .ToList();
 
+var file = "C:\\dev\\privat\\github\\UNLowCoder\\UNLowCoder.SourceGen\\Data\\ADALV.json";
+var json = File.ReadAllText(file, System.Text.Encoding.Unicode);
+GeocodeResponse gresult = JsonConvert.DeserializeObject<GeocodeResponse>(json);
 
 
 
-var c2 = withCoordinates.Count();
 
+//foreach (var loc in withCoordinates)
+//{
+//    var path = $"D:\\dev\\privat\\github\\UNLowCoder\\UNLowCoder\\UNLowCoder.SourceGen\\Data\\{loc.FullUnLocode}.json";
+//    if (File.Exists(path))
+//    {
+//        Console.WriteLine($"File {path} already exists.");
+//        continue;
+//    }
 
-var factory = new SimpleHttpFactory();
-
-INominatimWebInterface re = new NominatimWebInterface(factory);
-var geocoder = new ReverseGeocoder(re);
-
-foreach (var loc in withCoordinates)
-{
-    var path = $"D:\\dev\\privat\\github\\UNLowCoder\\UNLowCoder\\UNLowCoder.SourceGen\\Data\\{loc.FullUnLocode}.json";
-    if (File.Exists(path))
-    {
-        Console.WriteLine($"File {path} already exists.");
-        continue;
-    }
-    var request = new ReverseGeocodeRequest
-    {
-        BreakdownAddressElements = true,
-        DedupeResults = true,
-        ShowAlternativeNames = true,
-        ShowExtraTags = true,
-        Latitude = loc.Coordinates.Latitude,
-        Longitude = loc.Coordinates.Longitude,
-    };
-    GeocodeResponse result = await geocoder.ReverseGeocode(request);
-    var asJson = JsonConvert.SerializeObject(result, Formatting.Indented);    
-    File.WriteAllBytes(path, System.Text.Encoding.Unicode.GetBytes(asJson));
-    Console.WriteLine($"File {path} created.");    
-}
+//    var result = await loc.GetGeocodeDetailsAsync();
+//    var asJson = JsonConvert.SerializeObject(result, Formatting.Indented);
+//    File.WriteAllBytes(path, System.Text.Encoding.Unicode.GetBytes(asJson));
+//    Console.WriteLine($"File {path} created.");
+//}
 
 
 var all_countries = UnLocodes.Countries.All;

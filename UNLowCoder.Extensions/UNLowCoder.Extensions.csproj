@@ -34,7 +34,6 @@
     <PackageReference Include="Itinero" Version="1.6.0-pre037" />
     <PackageReference Include="Itinero.IO.Osm" Version="1.6.0-pre037" />
     <PackageReference Include="Nager.Country" Version="4.0.0" />
-    <PackageReference Include="Nominatim.API" Version="2.1.0" />
   </ItemGroup>
   
 </Project>

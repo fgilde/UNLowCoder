@@ -49,7 +49,7 @@
     <!-- Referenziere die Pakete, die dein Generator selbst benötigt. -->
     <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="8.0.0" GeneratePathProperty="true" PrivateAssets="all" />
     <PackageReference Include="Nextended.Core" Version="9.0.14"  GeneratePathProperty="true" PrivateAssets="all" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" GeneratePathProperty="true" PrivateAssets="all" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" GeneratePathProperty="true" PrivateAssets="all" />
     <PackageReference Include="CsvHelper" Version="33.0.1" GeneratePathProperty="true" PrivateAssets="all" />
     <PackageReference Include="UTF.Unknown" Version="2.5.1" GeneratePathProperty="true" PrivateAssets="all" />
 

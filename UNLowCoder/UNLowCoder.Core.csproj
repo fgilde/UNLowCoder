@@ -23,6 +23,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Extensions\**" />
+    <EmbeddedResource Remove="Extensions\**" />
+    <None Remove="Extensions\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Include="README.md" Pack="true" PackagePath="README.md" />
   </ItemGroup>
 
@@ -30,10 +36,7 @@
     <PackageReference Include="Nextended.Core" Version="9.0.14" />
     <PackageReference Include="CsvHelper" Version="33.0.1" />    
     <PackageReference Include="UTF.Unknown" Version="2.5.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Extensions\" />
+    <PackageReference Include="Nominatim.API" Version="2.1.0" />
   </ItemGroup>
 
 </Project>
