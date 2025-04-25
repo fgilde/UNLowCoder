@@ -1,12 +1,18 @@
 ﻿using Itinero;
 using Itinero.LocalGeo;
 using Itinero.Profiles;
+using Nager.Country;
 using UNLowCoder.Core.Data;
 
 namespace UNLowCoder.Extensions;
 
 public static class UnLocodeLocationExtensions
 {
+    public static ICountryInfo? CountryInfo(this UnLocodeLocation location)
+    {
+        return location.Country.CountryInfo();
+    }
+
     public static Route RouteTo(this UnLocodeLocation location, UnLocodeLocation target, Router router, IProfileInstance profile = null)
     {
         return location.Coordinates?.RouteTo(target.Coordinates, router, profile);

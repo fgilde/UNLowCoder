@@ -1,23 +1,65 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
-using System.Diagnostics.Metrics;
 using System.Globalization;
-using Itinero;
-using Itinero.IO.Osm;
 using Itinero.Osm.Vehicles;
 using Nager.Country;
+using Newtonsoft.Json;
+using Nextended.Core.Types;
+using Nominatim.API.Geocoders;
+using Nominatim.API.Interfaces;
+using Nominatim.API.Models;
+using Nominatim.API.Web;
+using Sample;
 using UNLowCoder;
-using UNLowCoder.Core.Extensions;
 using UNLowCoder.Extensions;
-using UNLowCoder.Extensions.Classes;
 using UNLowCoder.Lib;
 
 
 Console.WriteLine("Hello, World!");
 
 
+var location = UnLocodes.Locations.DE.HAM;
+var withCoordinates = UnLocodes.Locations.All
+    .Where(l => l.Coordinates != null)
+    .ToList();
+
+
+
+
+var c2 = withCoordinates.Count();
+
+
+var factory = new SimpleHttpFactory();
+
+INominatimWebInterface re = new NominatimWebInterface(factory);
+var geocoder = new ReverseGeocoder(re);
+
+foreach (var loc in withCoordinates)
+{
+    var path = $"D:\\dev\\privat\\github\\UNLowCoder\\UNLowCoder\\UNLowCoder.SourceGen\\Data\\{loc.FullUnLocode}.json";
+    if (File.Exists(path))
+    {
+        Console.WriteLine($"File {path} already exists.");
+        continue;
+    }
+    var request = new ReverseGeocodeRequest
+    {
+        BreakdownAddressElements = true,
+        DedupeResults = true,
+        ShowAlternativeNames = true,
+        ShowExtraTags = true,
+        Latitude = loc.Coordinates.Latitude,
+        Longitude = loc.Coordinates.Longitude,
+    };
+    GeocodeResponse result = await geocoder.ReverseGeocode(request);
+    var asJson = JsonConvert.SerializeObject(result, Formatting.Indented);    
+    File.WriteAllBytes(path, System.Text.Encoding.Unicode.GetBytes(asJson));
+    Console.WriteLine($"File {path} created.");    
+}
+
 
 var all_countries = UnLocodes.Countries.All;
+var c = all_countries[0];
 var pfaaa = UnLocodes.Locations.PF.AAA;
 var countries = UnLocodeParser.ParseZipArchive("C:\\Users\\fgild\\Downloads\\loc241csv.zip");
 var iatas = UnLocodes.Locations.All.Where(l => !string.IsNullOrEmpty(l.IATA)).ToList();
@@ -45,13 +87,13 @@ var borderOfGer = countries.Filter(ci.BorderCountries);
 
 var routerDE = await munden.Country.BuildRouterAsync("TEST");
 
-var profile = Itinero.Osm.Vehicles.Vehicle.Car.Fastest();
+var profile = Vehicle.Car.Fastest();
 //var profile = Ship.Instance.Profile;
 var route = munden.RouteTo(munich, routerDE, profile);
 var distanceInKm = route.TotalDistance / 1000;
 var distanceDirect = munden.DistanceTo(munich);
 
-var amount = all_countries[10].Currency.ConvertAmount(1000, currentCountry.Currency);
+Money amount = all_countries[10].Currency.ConvertAmount(1000, currentCountry.Currency);
 
 var germanLocations = UnLocodes.Locations.DE.All;
 var allL = UnLocodes.Locations.All;
@@ -68,3 +110,6 @@ var anotherLocation = allHH.First();
 var distance = firstLocation.DistanceTo(anotherLocation);
 
 Console.ReadLine();
+
+
+

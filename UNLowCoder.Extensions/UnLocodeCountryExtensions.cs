@@ -17,7 +17,7 @@ namespace UNLowCoder.Extensions
         public static ICountryInfo? CountryInfo(this UnLocodeCountry country)
         {
             try
-            {
+            {                
                 ICountryProvider countryProvider = new CountryProvider();
                 return countryProvider.GetCountry(country.CountryCode);
             }

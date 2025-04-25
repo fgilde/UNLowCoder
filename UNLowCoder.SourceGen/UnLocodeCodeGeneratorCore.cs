@@ -205,7 +205,7 @@ namespace UNLowCoder.SourceGen
 
                 var allArray = allLocations.Count > 0
                     ? $"new[] {{ {string.Join(", ", allLocations)} }}"
-                    : "System.Array.Empty<UnLocodeLocation>()";
+                    : $"System.Array.Empty<{context.LocationClass}>()";
 
                 sb.AppendLine($"    public static System.Collections.Generic.IReadOnlyList<{context.LocationClass}> {context.AllPropertyName} => {allArray};");
                 sb.AppendLine("}");
