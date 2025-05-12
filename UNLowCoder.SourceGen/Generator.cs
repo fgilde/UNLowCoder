@@ -6,12 +6,20 @@ using UNLowCoder.SourceGen;
 [Generator]
 public class UnLocodeGenerator : ISourceGenerator
 {
+    private int i = 3;
+    private bool attachDebugger = true;
+    private bool generationEnabled = true;
+    private DateTime LastGenerated = DateTime.MinValue;
     public void Initialize(GeneratorInitializationContext context)
     {}
 
     public void Execute(GeneratorExecutionContext context)
     {
-        if (!System.Diagnostics.Debugger.IsAttached)
+        if (!generationEnabled)
+            return;
+        
+        LastGenerated = DateTime.Now;
+        if (attachDebugger && !System.Diagnostics.Debugger.IsAttached)
             System.Diagnostics.Debugger.Launch();
 
 

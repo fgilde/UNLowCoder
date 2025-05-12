@@ -177,7 +177,9 @@ namespace UNLowCoder.SourceGen
 
                 var allLocations = new List<string>();
                 foreach (var loc in country.Locations)
-                {                    
+                {
+                    bool canGenerateSubdivisionFunc = false; //!string.IsNullOrEmpty(loc.SubdivisionCode); // TODO: Currently subdivision adding is not working and I dont know why
+                    string subDivisionFunc = $"{context.FullGeneratedClassName}.{context.StaticDivisionsClassName}.{loc.CountryCode}.{loc.CountryCode}_{loc.SubdivisionCode}";
                     var funcArgStr = string.Join(" | ", loc.Function.ToString().Split(',').Select(f => $"{nameof(LocationFunction)}.{f}"));
                     var identifier = SafeIdentifier(loc.LocationCode);
                     var privateFieldIdentifier = $"__pField_{identifier}";
@@ -199,8 +201,12 @@ namespace UNLowCoder.SourceGen
                     sb.AppendLine($"        {FormatCoordinates(loc.Coordinates)},");
                     sb.AppendLine($"        {EscapeString(loc.Remarks)},");
                     sb.AppendLine($"        {nameof(ChangeIndicator)}.{loc.Change}");
-                    sb.AppendLine($"    ) {{ {nameof(UnLocodeLocation.CountryResolverFunc)} = () => {context.FullGeneratedClassName}.{context.StaticCountriesClassName}.{country.CountryCode} }};");
-                   // sb.AppendLine($"    );");
+                    sb.AppendLine($"    ) {{ {nameof(UnLocodeLocation.CountryResolverFunc)} = () => {context.FullGeneratedClassName}.{context.StaticCountriesClassName}.{country.CountryCode},");
+                    if (canGenerateSubdivisionFunc)
+                    {
+                        sb.AppendLine($"        {nameof(UnLocodeLocation.SubdivisionResolverFunc)} = () => {subDivisionFunc}");
+                    }
+                    sb.AppendLine($"      }};");
                 }
 
                 var allArray = allLocations.Count > 0

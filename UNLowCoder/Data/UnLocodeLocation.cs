@@ -1,7 +1,5 @@
 ﻿using Newtonsoft.Json;
 using System;
-using System.Threading.Tasks;
-using Nominatim.API.Models;
 
 namespace UNLowCoder.Core.Data;
 
@@ -11,6 +9,11 @@ public partial record UnLocodeLocation
     public UnLocodeCountry Country => CountryResolverFunc?.Invoke();
     [JsonIgnore]
     public Func<UnLocodeCountry> CountryResolverFunc { get; set; }
+
+    [JsonIgnore]
+    public UnLocodeSubdivision Subdivision => SubdivisionResolverFunc?.Invoke();
+    [JsonIgnore]
+    public Func<UnLocodeSubdivision> SubdivisionResolverFunc { get; set; }
 
     public string CountryCode { get; }
     public string LocationCode { get; }
@@ -22,7 +25,6 @@ public partial record UnLocodeLocation
     public DateTime? LastUpdateDate { get; }
     public string? IATA { get; }
     public Coordinates? Coordinates { get; }
-    public GeocodeResponse GeocodeDetails { get; set; }
     public string? Remarks { get; }
     public ChangeIndicator Change { get; }
 
@@ -57,20 +59,9 @@ public partial record UnLocodeLocation
         Change = change;
     }
 
+
     public string FullUnLocode => CountryCode + LocationCode;
 
     public double? DistanceTo(Coordinates target) => Coordinates?.DistanceTo(target);
     public double? DistanceTo(UnLocodeLocation target) => DistanceTo(target?.Coordinates);
-    
-    public async Task<GeocodeResponse?> GetGeocodeDetailsAsync(ReverseGeocodeRequest? request = null, bool forceReload = false)
-    {
-        if (forceReload || GeocodeDetails is null)
-        {
-            if (Coordinates is null) return null;
-            var res = await Coordinates.GetGeocodeDetailsAsync(request);
-            GeocodeDetails = res;
-        }
-
-        return GeocodeDetails;
-    }
 }

@@ -20,6 +20,7 @@ namespace UNLowCoder.SourceGen
         public string StaticCountriesClassName { get; set; } = "Countries";
         public string StaticLocationsClassName { get; set; } = "Locations";
         public string StaticDivisionsClassName { get; set; } = "Subdivisions";
+        public bool SubdivisionCodeInsteadOfClassOnly { get; set; }
 
         public GeneratorDataContext(AdditionalText originFile, List<UnLocodeCountry> countries, NamespaceResolver namespaceResolver)
         {            
