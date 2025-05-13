@@ -1,17 +1,9 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
 using System.Globalization;
-using System.Text.Json;
 using Itinero.Osm.Vehicles;
 using Nager.Country;
-using Newtonsoft.Json;
 using Nextended.Core.Types;
-using Nominatim.API.Geocoders;
-using Nominatim.API.Interfaces;
-using Nominatim.API.Models;
-using Nominatim.API.Web;
-using UNLowCoder;
-using UNLowCoder.Core;
 using UNLowCoder.Extensions;
 using UNLowCoder.Lib;
 
@@ -28,36 +20,17 @@ var withCoordinates = UnLocodes.Locations.All
 //var json = File.ReadAllText(file, System.Text.Encoding.Unicode);
 //GeocodeResponse gresult = JsonConvert.DeserializeObject<GeocodeResponse>(json);
 
-var loc = UnLocodes.Locations.Find("DEFRA");
-var loc2 = UnLocodes.Locations.Find("ushou");
+var loc = UnLocodes.Locations.Find("USLEY");
 var geo = await loc.GetGeocodeDetailsAsync();
+var reference = UnLocodes.Locations.Find(loc.Coordinates);
+var equal = loc.Equals(reference);
+
 
 var geo2 = await location.GetGeocodeDetailsAsync();
 var geo4 = await UnLocodes.Locations.US.CGH.GetGeocodeDetailsAsync();
 var geo7 = await UnLocodes.Locations.US.CGH.GetGeocodeDetailsAsync();
 
-var client = new HttpClient();
-// Nominatim requires a valid User-Agent header
-client.DefaultRequestHeaders.Add("User-Agent", "MyApp/1.0");
 
-var url = $"https://nominatim.openstreetmap.org/reverse" +
-          $"?lat={location.Coordinates.Latitude.ToString().Replace(",", ".")}&lon={location.Coordinates.Longitude.ToString().Replace(",", ".")}" +
-          $"&format=jsonv2" +            // request the JSONv2 output
-          $"&addressdetails=1" +         // breakdown into address elements
-          $"&extratags=1" +              // include extra tags (if you need them)
-          $"&namedetails=1";             // include alt-names (if you need them)
-
-var payload = await client.GetStringAsync(url);
-using var doc = JsonDocument.Parse(payload);
-
-var addr = doc.RootElement
-    .GetProperty("address");
-
-var state = addr.TryGetProperty("state", out var s)
-    ? s.GetString()
-    : "";
-
-Console.WriteLine($"State: {state}");
 
 
 //foreach (var loc in withCoordinates)

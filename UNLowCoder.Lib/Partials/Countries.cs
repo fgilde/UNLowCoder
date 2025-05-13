@@ -17,10 +17,27 @@ public partial class UnLocodes
     }
     public static partial class Locations
     {
-        public static UnLocodeLocation Find(string fullLocode)
+        public static UnLocodeLocation? Find(string fullLocode)
         {
-            return All.FirstOrDefault(l => l.FullUnLocode.Equals(fullLocode, StringComparison.OrdinalIgnoreCase))
-                ?? throw new ArgumentException($"Location with full UnLocode '{fullLocode}' not found.");
+            return All.FirstOrDefault(l => l.FullUnLocode.Equals(fullLocode, StringComparison.OrdinalIgnoreCase));
+        }
+
+        public static UnLocodeLocation? Find(double latitude, double longitude) => Find(new Coordinates(latitude, longitude));
+        public static UnLocodeLocation? Find(double latitude, double longitude, double minDistance) => Find(new Coordinates(latitude, longitude), minDistance);
+
+        public static UnLocodeLocation? Find(Coordinates coordinates)
+        {
+            const double tolerance = 1e-6;
+            return All.FirstOrDefault(l =>
+                l.Coordinates != null
+                && Math.Abs(l.Coordinates.Latitude - coordinates.Latitude) < tolerance
+                && Math.Abs(l.Coordinates.Longitude - coordinates.Longitude) < tolerance
+            );
+        }
+        
+        public static UnLocodeLocation? Find(Coordinates coordinates, double minDistance)
+        {
+            return All.FirstOrDefault(l => l.Coordinates?.DistanceTo(coordinates) <= minDistance);
         }
     }
 }
