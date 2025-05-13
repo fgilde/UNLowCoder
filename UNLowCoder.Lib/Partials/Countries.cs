@@ -17,6 +17,7 @@ public partial class UnLocodes
     }
     public static partial class Locations
     {
+    
         public static UnLocodeLocation? Find(string fullLocode)
         {
             return All.FirstOrDefault(l => l.FullUnLocode.Equals(fullLocode, StringComparison.OrdinalIgnoreCase));
@@ -38,6 +39,25 @@ public partial class UnLocodes
         public static UnLocodeLocation? Find(Coordinates coordinates, double minDistance)
         {
             return All.FirstOrDefault(l => l.Coordinates?.DistanceTo(coordinates) <= minDistance);
+        }
+        
+
+        public static IEnumerable<UnLocodeLocation> FindAll(double latitude, double longitude) => FindAll(new Coordinates(latitude, longitude));
+        public static IEnumerable<UnLocodeLocation> FindAll(double latitude, double longitude, double minDistance) => FindAll(new Coordinates(latitude, longitude), minDistance);
+
+        public static IEnumerable<UnLocodeLocation> FindAll(Coordinates coordinates)
+        {
+            const double tolerance = 1e-6;
+            return All.Where(l =>
+                l.Coordinates != null
+                && Math.Abs(l.Coordinates.Latitude - coordinates.Latitude) < tolerance
+                && Math.Abs(l.Coordinates.Longitude - coordinates.Longitude) < tolerance
+            );
+        }
+
+        public static IEnumerable<UnLocodeLocation> FindAll(Coordinates coordinates, double minDistance)
+        {
+            return All.Where(l => l.Coordinates?.DistanceTo(coordinates) <= minDistance);
         }
     }
 }
