@@ -55,7 +55,7 @@ namespace UNLowCoder.SourceGen
             foreach (var country in context.Countries)
             {
                 var identifier = SafeIdentifier(country.CountryCode);
-                var privateFieldIdentifier = $"__pField_{identifier}";
+                var privateFieldIdentifier = $"__pFieldCountry_{identifier}";
 
                 allCountries.Add(identifier);
 
@@ -125,7 +125,7 @@ namespace UNLowCoder.SourceGen
                 foreach (var sub in country.Subdivisions)
                 {
                     var identifier = SafeIdentifier(sub.CountryCode + "_" + sub.SubdivisionCode);
-                    var privateFieldIdentifier = $"__pField_{identifier}";
+                    var privateFieldIdentifier = $"__pFieldSubdivision_{identifier}";
 
                     allSubdivisions.Add(identifier);
 
@@ -178,11 +178,12 @@ namespace UNLowCoder.SourceGen
                 var allLocations = new List<string>();
                 foreach (var loc in country.Locations)
                 {
-                    bool canGenerateSubdivisionFunc = false; //!string.IsNullOrEmpty(loc.SubdivisionCode); // TODO: Currently subdivision adding is not working and I dont know why
+                    bool canGenerateSubdivisionFunc = !string.IsNullOrEmpty(loc.SubdivisionCode); // TODO: Currently subdivision adding is not working and I dont know why
                     string subDivisionFunc = $"{context.FullGeneratedClassName}.{context.StaticDivisionsClassName}.{loc.CountryCode}.{loc.CountryCode}_{loc.SubdivisionCode}";
+                    string subDivisionFunc2 = $"{context.FullGeneratedClassName}.{context.StaticDivisionsClassName}.{loc.CountryCode}.All.FirstOrDefault(sd => sd.SubdivisionCode == \"{loc.SubdivisionCode}\")";
                     var funcArgStr = string.Join(" | ", loc.Function.ToString().Split(',').Select(f => $"{nameof(LocationFunction)}.{f}"));
                     var identifier = SafeIdentifier(loc.LocationCode);
-                    var privateFieldIdentifier = $"__pField_{identifier}";
+                    var privateFieldIdentifier = $"__pFieldLocation_{identifier}";
                     allLocations.Add(identifier);
 
                     sb.AppendLine($"    private static {context.LocationClass}? {privateFieldIdentifier} = null;");
@@ -204,7 +205,13 @@ namespace UNLowCoder.SourceGen
                     sb.AppendLine($"    ) {{ {nameof(UnLocodeLocation.CountryResolverFunc)} = () => {context.FullGeneratedClassName}.{context.StaticCountriesClassName}.{country.CountryCode},");
                     if (canGenerateSubdivisionFunc)
                     {
-                        sb.AppendLine($"        {nameof(UnLocodeLocation.SubdivisionResolverFunc)} = () => {subDivisionFunc}");
+                        var fnToUse = subDivisionFunc;
+                        var canUseDirect = context.Countries?.FirstOrDefault(c => c.CountryCode == loc.CountryCode)?.Subdivisions?.Any(sd => sd.SubdivisionCode == loc.SubdivisionCode) ?? false;
+                        if (!canUseDirect)
+                        {
+                            fnToUse = subDivisionFunc2;
+                        }
+                        sb.AppendLine($"        {nameof(UnLocodeLocation.SubdivisionResolverFunc)} = () => {fnToUse}");
                     }
                     sb.AppendLine($"      }};");
                 }

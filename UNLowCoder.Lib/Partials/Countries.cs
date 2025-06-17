@@ -14,6 +14,11 @@ public partial class UnLocodes
             return All.FirstOrDefault(l => l.SubdivisionCode.Equals(subdivisionCode, StringComparison.OrdinalIgnoreCase))
                    ?? throw new ArgumentException($"Subdivision with code '{subdivisionCode}' not found.");
         }
+
+        public static IEnumerable<UnLocodeSubdivision> FindAll(string subdivisionCode)
+        {
+            return All.Where(l => l.SubdivisionCode.Equals(subdivisionCode, StringComparison.OrdinalIgnoreCase));
+        }
     }
     public static partial class Locations
     {
