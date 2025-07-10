@@ -1,0 +1,19 @@
+﻿{
+  "ExcelGenerations": [
+    {
+      "ModelType": "RecordStruct",
+      "SourceFile": "/Sources/scac_codes.xlsx",
+      "SheetName": null,
+      "Namespace": "UNLowCoder.Lib",
+      "RootClassName": "ScacCode", // Name of the root class to generate
+      "KeyColumn": "A", // Column to use as key for the generated class e.g. "A" for the first column B,C etc.
+      "HeaderRowIndex": 1,
+      "DataStartRowIndex": 2,
+      "GenerateModelClass": true,
+      "GenerateStaticTable": true,
+      "StaticClassName": "ScacCodes", //Name of the static class to generate
+      "GenerateAllCollection": true,
+      "OutputPath": "./GeneratedFiles/ScacCode/" // Output path for the generated file, if its null or unset the files will added to generation source
+    }
+  ]
+}

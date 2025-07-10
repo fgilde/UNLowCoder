@@ -7,7 +7,7 @@ using UNLowCoder.SourceGen;
 public class UnLocodeGenerator : ISourceGenerator
 {
     private int i = 1;
-    private bool attachDebugger = true;
+    private bool attachDebugger = false;
     private bool generationEnabled = true;
     private DateTime LastGenerated = DateTime.MinValue;
     public void Initialize(GeneratorInitializationContext context)
