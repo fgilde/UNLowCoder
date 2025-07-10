@@ -30,15 +30,15 @@
     <None Include="README.md" Pack="true" PackagePath="README.md" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Nextended.CodeGen" Version="9.0.15" />
+    <PackageReference Include="Nextended.CodeGen" Version="9.0.16" />
   </ItemGroup>  
   <ItemGroup>
     <ProjectReference Include="..\UNLowCoder.SourceGen\UNLowCoder.SourceGen.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
     <ProjectReference Include="..\UNLowCoder\UNLowCoder.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <AdditionalFiles Include="UnLocodes.zip" />
     <AdditionalFiles Include="CodeGen.config.json" />
+    <AdditionalFiles Include="UnLocodes.zip" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="GeneratedFiles\UNLowCoder.SourceGen\" />
