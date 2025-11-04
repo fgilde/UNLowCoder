@@ -19,3 +19,9 @@ And a generated class library to easially use the UN/Locodes in your project.
 [![NuGet](https://img.shields.io/nuget/v/UNLowCoder.Lib)](https://www.nuget.org/packages/UNLowCoder.Lib/)
 <br>
 [More Info](https://github.com/fgilde/UNLowCoder/tree/master/UNLowCoder.Lib)
+
+
+## UNLowCoder.Extensions
+[![NuGet](https://img.shields.io/nuget/v/UNLowCoder.Extensions)](https://www.nuget.org/packages/UNLowCoder.Extensions/)
+<br>
+[More Info](https://github.com/fgilde/UNLowCoder/tree/master/UNLowCoder.Extensions)
