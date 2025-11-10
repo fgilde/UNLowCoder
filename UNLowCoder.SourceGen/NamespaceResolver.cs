@@ -1,29 +1,21 @@
 ﻿namespace UNLowCoder.SourceGen
 {
-    internal class NamespaceResolver
+    internal class NamespaceResolver(
+        string originFilePath,
+        string fallBackRootNamespace,
+        NamespaceResolver.OptionsTryGetFunc optionsGetterFunc)
     {
-        public delegate bool OptionsTryGetFunc(string key, out string value);
+        public delegate bool OptionsTryGetFunc(string key, out string? value);
 
-        private string originFilePath;
-        private readonly string fallBackRootNamespace;
-        private readonly OptionsTryGetFunc optionsTryGetFunc;
-
-        public NamespaceResolver(string originFilePath, string fallBackRootNamespace, OptionsTryGetFunc optionsGetterFunc)
+        public string? Resolve()
         {
-            this.originFilePath = originFilePath;
-            this.fallBackRootNamespace = fallBackRootNamespace;
-            this.optionsTryGetFunc = optionsGetterFunc;
-        }
-
-        public string Resolve()
-        {
-            if (!this.optionsTryGetFunc("build_property.rootnamespace", out var rootNamespace))
+            if (!optionsGetterFunc("build_property.rootnamespace", out var rootNamespace))
                 rootNamespace = fallBackRootNamespace;
 
-            if (this.optionsTryGetFunc("build_property.projectdir", out var projectDir))
+            if (optionsGetterFunc("build_property.projectdir", out var projectDir) && projectDir != null)
             {
                 var fromPath = this.EnsurePathEndsWithDirectorySeparator(projectDir);
-                var toPath = this.EnsurePathEndsWithDirectorySeparator(Path.GetDirectoryName(this.originFilePath));
+                var toPath = this.EnsurePathEndsWithDirectorySeparator(Path.GetDirectoryName(originFilePath));
                 var relativPath = this.GetRelativePath(fromPath, toPath);
 
                 return $"{rootNamespace}.{relativPath.Replace(Path.DirectorySeparatorChar, '.')}";

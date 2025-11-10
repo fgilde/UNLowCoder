@@ -1,29 +1,23 @@
 ﻿using CsvHelper;
 using Microsoft.CodeAnalysis;
-using System;
 using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Text;
 using UNLowCoder;
 using UNLowCoder.Core;
 using UNLowCoder.SourceGen;
-
-#nullable enable
 
 [Generator(LanguageNames.CSharp)]
 public sealed class UnLocodeIncrementalGenerator : IIncrementalGenerator
 {
     private record struct ZipInput(AdditionalText File, long Length, DateTime LastWriteUtc);
 
-    private bool AttachDebugger = false;
+    private bool AttachDebugger = true;
     public void Initialize(IncrementalGeneratorInitializationContext context)
     {
         if (AttachDebugger && !System.Diagnostics.Debugger.IsAttached)
             System.Diagnostics.Debugger.Launch();
         context.RegisterPostInitializationOutput(pi =>
         {
-            pi.AddSource("UnLocodeGenerator.Ping.g.cs", "// Ping from UnLocodeGenerator\n");
+            pi.AddSource("UnLocodeGenerator.Ping.g.cs", "// HELLo Ping from UnLocodeGenerator\n");
         });
 
         
@@ -44,7 +38,7 @@ public sealed class UnLocodeIncrementalGenerator : IIncrementalGenerator
         context.RegisterSourceOutput(zipFiles, static (spc, z) =>
         {
             spc.AddSource("UnLocodeGenerator.Puff.g.cs",
-                $"// zip: {z.File.Path} | exists= | len={z.Length} | mtime={z.LastWriteUtc:O}\n");
+                $"// MoIn zip: {z.File.Path} | exists= | len={z.Length} | mtime={z.LastWriteUtc:O}\n");
         });
 
         var compilation = context.CompilationProvider;
