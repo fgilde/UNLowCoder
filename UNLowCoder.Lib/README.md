@@ -4,6 +4,9 @@
 This package contains the core functionality to parse the UNLocode csv files and provides generated classes under the namespace `UnLocodes`.
 It uses the [UNLowCoder.SourceGen](https://www.nuget.org/packages/UNLowCoder.SourceGen/) package to generate the resulting classes.
 
+## 📚 Documentation
+View the complete API documentation at: **[https://fgilde.github.io/UNLowCoder](https://fgilde.github.io/UNLowCoder)**
+
 
 ## Usage
 

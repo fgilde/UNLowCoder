@@ -362,3 +362,8 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 /UNLowCoder.Lib/GeneratedFiles/
+
+# DocFX generated documentation
+docs/_site/
+docs/api/
+docs/obj/
