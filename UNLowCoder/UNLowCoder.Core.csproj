@@ -33,7 +33,6 @@
 
   <ItemGroup>
     <PackageReference Include="Nextended.Core" Version="9.0.27" />
-    <PackageReference Include="CsvHelper" Version="33.1.0" />    
     <PackageReference Include="UTF.Unknown" Version="2.6.0" />
   </ItemGroup>
 

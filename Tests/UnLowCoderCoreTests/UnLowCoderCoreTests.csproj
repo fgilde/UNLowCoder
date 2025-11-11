@@ -22,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\UNLowCoder.Extensions\UNLowCoder.Extensions.csproj" />
+    <ProjectReference Include="..\..\UNLowCoder\UNLowCoder.Core.csproj" />
   </ItemGroup>
 
   <ItemGroup>

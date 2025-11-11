@@ -17,7 +17,7 @@
     <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
     <BaseOutputPath>..\bin</BaseOutputPath>
     <IsPackable>true</IsPackable>
-    <IncludeBuildOutput>false</IncludeBuildOutput>
+    <!--<IncludeBuildOutput>false</IncludeBuildOutput>-->
     <DevelopmentDependency>true</DevelopmentDependency>
   </PropertyGroup>
 
@@ -45,7 +45,6 @@
   
   <ItemGroup>
     <!-- Runtime-Abhängigkeiten, die der Generator/UNLowCoder.Core braucht -->
-    <PackageReference Include="CsvHelper" Version="33.1.0" GeneratePathProperty="true" PrivateAssets="all"  />
     <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="9.0.10" GeneratePathProperty="true" PrivateAssets="all" />
     <PackageReference Include="Nextended.Core" Version="9.0.27" GeneratePathProperty="true" PrivateAssets="all"   />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.4" GeneratePathProperty="true" PrivateAssets="all"  />
@@ -58,39 +57,9 @@
   </ItemGroup>
 
 
-
-  <!--<ItemGroup>
-    <Compile Remove="bin\**" />
-    <EmbeddedResource Remove="bin\**" />
-    <None Remove="bin\**" />
-  </ItemGroup>
-
-  <PropertyGroup>
-    <GetTargetPathDependsOn>$(GetTargetPathDependsOn);GetDependencyTargetPaths</GetTargetPathDependsOn>
-    <BaseOutputPath>..\bin\</BaseOutputPath>
-  </PropertyGroup>
-
-  <Target Name="GetDependencyTargetPaths">
-    <ItemGroup>
-      <TargetPathWithTargetPlatformMoniker Include="$(PkgNewtonsoft_Json)\lib\netstandard2.0\*.dll" IncludeRuntimeDependency="false" />
-    </ItemGroup>
-  </Target>
-    
-  <Target Name="AddAnalyzerAssemblies" AfterTargets="Build">
-    <ItemGroup>
-      <AnalyzerAssembly Include="$(PkgNextended_Core)\lib\netstandard2.0\Nextended.Core.dll" />
-      <AnalyzerAssembly Include="$(PkgCsvHelper)\lib\netstandard2.0\CsvHelper.dll" />
-      <AnalyzerAssembly Include="$(PkgUTF_Unknown)\lib\netstandard2.0\UTF.Unknown.dll" />
-      <AnalyzerAssembly Include="$(PkgMicrosoft_Bcl_AsyncInterfaces)\lib\netstandard2.0\Microsoft.Bcl.AsyncInterfaces.dll" />
-    </ItemGroup>
-  </Target>-->
-
-
-
-
   <ItemGroup>
     <None Include="$(TargetDir)*.dll"
-          Exclude="$(TargetDir)System*.dll;$(TargetDir)Microsoft*.dll;$(TargetDir)mscorlib.dll;$(TargetDir)netstandard.dll"
+          Exclude="$(TargetDir)UNLowCoder.Extensions.dll;$(TargetDir)UNLowCoder.Lib.dll;$(TargetDir)System*.dll;$(TargetDir)Microsoft*.dll;$(TargetDir)mscorlib.dll;$(TargetDir)netstandard.dll"
           Pack="true"
           PackagePath="analyzers/dotnet/cs"
           Visible="false" />
