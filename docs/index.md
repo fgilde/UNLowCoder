@@ -34,7 +34,7 @@ Extension methods for working with UN/Locodes, including geocoding and country i
 
 ## Getting Started
 
-Browse the [API Documentation](api/) to explore all available classes and methods.
+Browse the API Documentation to explore all available classes and methods. Navigate to the "API Reference" section using the navigation menu above.
 
 ## Links
 

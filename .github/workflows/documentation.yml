@@ -34,7 +34,11 @@ jobs:
         run: dotnet restore
       
       - name: Build projects
-        run: dotnet build --configuration Release --no-restore
+        run: |
+          dotnet build UNLowCoder/UNLowCoder.Core.csproj --configuration Release --no-restore
+          dotnet build UNLowCoder.SourceGen/UNLowCoder.SourceGen.csproj --configuration Release --no-restore
+          dotnet build UNLowCoder.Extensions/UNLowCoder.Extensions.csproj --configuration Release --no-restore
+          dotnet build UNLowCoder.Lib/UNLowCoder.Lib.csproj --configuration Release --no-restore
       
       - name: Build documentation
         run: docfx docs/docfx.json
