@@ -1,0 +1,52 @@
+{
+  "metadata": [
+    {
+      "src": [
+        {
+          "src": "..",
+          "files": [
+            "UNLowCoder/UNLowCoder.Core.csproj",
+            "UNLowCoder.SourceGen/UNLowCoder.SourceGen.csproj",
+            "UNLowCoder.Extensions/UNLowCoder.Extensions.csproj",
+            "UNLowCoder.Lib/UNLowCoder.Lib.csproj"
+          ]
+        }
+      ],
+      "dest": "api",
+      "disableGitFeatures": false,
+      "disableDefaultFilter": false
+    }
+  ],
+  "build": {
+    "content": [
+      {
+        "files": [
+          "**/*.{md,yml}"
+        ],
+        "exclude": [
+          "_site/**"
+        ]
+      }
+    ],
+    "resource": [
+      {
+        "files": [
+          "images/**"
+        ]
+      }
+    ],
+    "output": "_site",
+    "template": [
+      "default",
+      "modern"
+    ],
+    "globalMetadata": {
+      "_appName": "UNLowCoder",
+      "_appTitle": "UNLowCoder Documentation",
+      "_enableSearch": true,
+      "_appLogoPath": "images/logo.png",
+      "_appFooter": "Copyright © 2020-2024 fgilde | MIT License",
+      "pdf": false
+    }
+  }
+}

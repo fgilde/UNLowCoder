@@ -8,6 +8,9 @@ package to provide and generate the classes for UN/Locodes.
 <br>
 But you can use the Core package also standalone to parse the csv zip files own your own at runtime.
 
+## 📚 Documentation
+View the complete API documentation at: **[https://fgilde.github.io/UNLowCoder](https://fgilde.github.io/UNLowCoder)**
+
 ## Usage
 
 ### Install the nuget package
