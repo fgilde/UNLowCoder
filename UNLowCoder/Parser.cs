@@ -5,6 +5,8 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using CsvHelper;
 using UNLowCoder.Core;
 using UNLowCoder.Core.Data;
@@ -14,6 +16,19 @@ namespace UNLowCoder;
 
 public static class UnLocodeParser
 {
+
+    /// <summary>
+    /// Parse a ZIP archive containing the UN/LOCODE CSV files.
+    /// </summary>
+    /// <param name="filePath">Path of zip file</param>
+    /// <param name="parseMode">Mode of parsing and dealing with duplicates</param>
+    /// <returns></returns>
+    public static Task<List<UnLocodeCountry>> ParseZipArchiveAsync(string filePath, ParseMode parseMode = ParseMode.AllEntries, CancellationToken ct = default)
+    {
+        using var fs = File.OpenRead(filePath);
+        return ParseZipStreamAsync(fs, parseMode, ct);
+    }
+
     /// <summary>
     /// Parse a ZIP archive containing the UN/LOCODE CSV files.
     /// </summary>
@@ -24,6 +39,12 @@ public static class UnLocodeParser
     {
         using var fs = File.OpenRead(filePath);
         return ParseZipStream(fs, parseMode);
+    }
+
+    public static Task<List<UnLocodeCountry>> ParseZipStreamAsync(Stream zipStream,
+        ParseMode parseMode = ParseMode.AllEntries, CancellationToken ct = default)
+    {
+        return Task.Run(() => ParseZipStream(zipStream, parseMode), ct);
     }
 
     /// <summary>
@@ -41,17 +62,28 @@ public static class UnLocodeParser
 
         using (var archive = new ZipArchive(zipStream, ZipArchiveMode.Read))
         {
-            foreach (var entry in archive.Entries)
-                if (entry.Name.EndsWith(".csv", StringComparison.OrdinalIgnoreCase))
-                {
-                    using var fileStream = entry.Open();
-                    var fileNameLower = entry.Name.ToLowerInvariant();
+            var hasCombined = archive.Entries.Any(e =>
+                e.Name.Equals("CodeList.csv", StringComparison.OrdinalIgnoreCase));
 
-                    if (fileNameLower.Contains("subdivision"))
-                        ParseSubdivisionFile(fileStream, subdivisionsByCountry);
-                    else if (fileNameLower.Contains("codelist"))
-                        ParseCodeListFile(fileStream, countryNames, locationsByCountry);
+            foreach (var entry in archive.Entries)
+            {
+                if (!entry.Name.EndsWith(".csv", StringComparison.OrdinalIgnoreCase)) continue;
+
+                var fileNameLower = entry.Name.ToLowerInvariant();
+
+                if (fileNameLower.Contains("subdivision"))
+                {
+                    using var s = entry.Open();
+                    ParseSubdivisionFile(s, subdivisionsByCountry);
                 }
+                else if (fileNameLower.Contains("codelist"))
+                {
+                    if (hasCombined && fileNameLower.Contains("part")) continue;
+
+                    using var s = entry.Open();
+                    ParseCodeListFile(s, countryNames, locationsByCountry);
+                }
+            }
         }
 
         if (onlyNewest)
@@ -78,8 +110,8 @@ public static class UnLocodeParser
                             l.LastUpdateDate.HasValue ? l.LastUpdateDate.Value : DateTime.MinValue).ToList();
                         var newest = sorted.First();
                         if (newest.Change == ChangeIndicator.MarkedForDeletion)
-                            return new {g.Key, Loc = (UnLocodeLocation) null};
-                        return new {g.Key, Loc = newest};
+                            return new { g.Key, Loc = (UnLocodeLocation)null };
+                        return new { g.Key, Loc = newest };
                     })
                     .Where(x => x.Loc != null)
                     .Select(x => x.Loc)
@@ -91,9 +123,9 @@ public static class UnLocodeParser
         }
 
         var countries = new List<UnLocodeCountry>();
-        if(locationsByCountry.ContainsKey("Country"))
+        if (locationsByCountry.ContainsKey("Country"))
             locationsByCountry.Remove("Country");
-        if(subdivisionsByCountry.ContainsKey("Country"))
+        if (subdivisionsByCountry.ContainsKey("Country"))
             subdivisionsByCountry.Remove("Country");
         // Now we build the countries together
         // All subdivisions per country + all locations per country
@@ -226,8 +258,40 @@ public static class UnLocodeParser
             var name = GetSafeField(csv, 3);
             var nameWo = GetSafeField(csv, 4);
             var subdivisionCode = GetSafeField(csv, 5);
-            var statusStr = GetSafeField(csv, 6);
-            var functionStr = GetSafeField(csv, 7);
+
+
+            var col6 = GetSafeField(csv, 6);
+            var col7 = GetSafeField(csv, 7);
+
+            static bool LooksLikeFunction(string s) =>
+                !string.IsNullOrWhiteSpace(s) &&
+                s.Length >= 7 && s.Length <= 8 &&
+                s.All(ch => ch == '-' || char.IsDigit(ch) || ch == 'B');
+
+            static bool LooksLikeStatus(string s) =>
+                !string.IsNullOrWhiteSpace(s) &&
+                s.Length <= 3 &&
+                s.All(char.IsLetter);
+
+
+            string functionStr, statusStr;
+            if (LooksLikeFunction(col6) && LooksLikeStatus(col7))
+            {
+                functionStr = col6;
+                statusStr = col7;
+            }
+            else if (LooksLikeFunction(col7) && LooksLikeStatus(col6))
+            {
+                functionStr = col7;
+                statusStr = col6;
+            }
+            else
+            {
+                statusStr = col6;
+                functionStr = col7;
+            }
+
+
             var dateStr = GetSafeField(csv, 8);
             var iata = GetSafeField(csv, 9);
             var coordsString = GetSafeField(csv, 10);
@@ -286,7 +350,7 @@ public static class UnLocodeParser
 
     private static Coordinates? ParseCoordinates(string coords)
     {
-        var parts = coords.Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries);
+        var parts = coords.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
         if (parts.Length < 2) return null;
 
         double ParseCoordPart(string part)
@@ -326,23 +390,28 @@ public static class UnLocodeParser
         return LocationStatus.Unknown;
     }
 
-
     private static LocationFunction ParseFunction(string functionStr)
     {
-        if (string.IsNullOrEmpty(functionStr) || functionStr.Length < 7)
+        if (string.IsNullOrWhiteSpace(functionStr))
+            return LocationFunction.None;
+
+        functionStr = functionStr.Trim();
+        if (functionStr.Length < 7)  // 7..8 Zeichen sind üblich
             return LocationFunction.None;
 
         var func = LocationFunction.None;
-        for (var i = 0; i < 7; i++)
+        // Positionen 0..6 entsprechen 1..7
+        for (var i = 0; i < 7 && i < functionStr.Length; i++)
         {
-            if (char.IsDigit(functionStr[i]) && int.Parse(functionStr[i].ToString()) > 0)
-            {
+            var ch = functionStr[i];
+            if (char.IsDigit(ch) && ch != '0')
                 func |= (LocationFunction)(1 << i);
-            }
         }
-
         return func;
     }
+
+
+  
 
     private static DateTime? ParseDate(string dateStr)
     {

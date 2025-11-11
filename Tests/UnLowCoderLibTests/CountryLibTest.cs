@@ -21,7 +21,7 @@ namespace UnLowCoderTests
         public void Can_Resolve_By_CultureInfo()
         {
             var cultureInfo = new CultureInfo("de-DE");
-            var germany = UnLocodes.Countries.Get(cultureInfo);            
+            var germany = UnLocodes.Countries.Get(cultureInfo);
             Verify(germany);
         }
 

@@ -31,28 +31,33 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Nextended.CodeGen" Version="9.0.27" />
-    <PackageReference Include="CsvHelper" Version="33.1.0" PrivateAssets="all" />
+    <PackageReference Include="CsvHelper" Version="33.1.0" />
   </ItemGroup>
   <ItemGroup>
     <!-- Generator als Analyzer -->
-    <ProjectReference Include="..\UNLowCoder.SourceGen\UNLowCoder.SourceGen.csproj"
+    <ProjectReference Include="..\UNLowCoder.SourceGen\UNLowCoder.SourceGen.csproj"  
                       OutputItemType="Analyzer"
-                      ReferenceOutputAssembly="false" />
+                      ReferenceOutputAssembly="false" >
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </ProjectReference>
 
+    <!--<PackageReference Include="UNLowCoder.SourceGen" Version="1.0.0-prev-1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>-->
+
+    
     <!-- Core auch dem Analyzer-Loader bereitstellen -->
-    <ProjectReference Include="..\UNLowCoder\UNLowCoder.Core.csproj"
-                      OutputItemType="Analyzer"
-                      ReferenceOutputAssembly="true" />
+    <ProjectReference Include="..\UNLowCoder\UNLowCoder.Core.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="true" />
 
     <!-- (optional) normale Compile-Referenz, falls deine Library-Core-Typen direkt nutzt -->
     <ProjectReference Include="..\UNLowCoder\UNLowCoder.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
     <AdditionalFiles Include="CodeGen.config.json" />
-    <AdditionalFiles Include="Sources\loc241csv.zip" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="GeneratedFiles\UNLowCoder.SourceGen\" />
+    <AdditionalFiles Include="UnLocodes.zip" />
+    <!--<AdditionalFiles Include="Sources\loc241csv.zip" />-->
   </ItemGroup>
 
 </Project>

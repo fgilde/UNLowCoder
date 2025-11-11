@@ -1,11 +1,15 @@
 ﻿using Argon;
 using UNLowCoder.Core.Data;
-using UNLowCoder.Lib;
+
 
 namespace UnLowCoderTests;
 
 public abstract class BaseTest : IClassFixture<TestFixture>
 {
+    protected string SolutionRoot => Path.Combine(AppContext.BaseDirectory, "../../../../../");
+    protected string TestDataPath => Path.Combine(SolutionRoot, "UNLowCoder.Lib", "Sources");
+    protected string TestPathTo(params string[] paths) => Path.Combine(TestDataPath, Path.Combine(paths));
+
     protected readonly TestFixture Fixture;
     protected VerifySettings VerifySettings = new VerifySettings();
     protected void Verify<T>(T item)
@@ -24,15 +28,15 @@ public abstract class BaseTest : IClassFixture<TestFixture>
 
 public class TestFixture : IDisposable
 {
-    public IReadOnlyList<UnLocodeCountry> AllCountries { get; private set; }    
+    public IReadOnlyList<UnLocodeCountry> AllCountries { get; private set; }
 
     public TestFixture()
     {
-        AllCountries = UnLocodes.Countries.All;
-        VerifierSettings.ScrubInlineGuids();        
+        //AllCountries = UnLocodes.Countries.All;
+        VerifierSettings.ScrubInlineGuids();
     }
 
     public void Dispose()
-    {      
+    {
     }
 }

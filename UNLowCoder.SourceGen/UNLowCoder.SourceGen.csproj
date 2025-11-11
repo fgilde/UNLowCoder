@@ -15,7 +15,10 @@
     <CompilerGeneratedFilesOutputPath>Generated</CompilerGeneratedFilesOutputPath>
     <IncludeAnalyzerReferencesInVSIX>true</IncludeAnalyzerReferencesInVSIX>
     <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
-    
+    <BaseOutputPath>..\bin</BaseOutputPath>
+    <IsPackable>true</IsPackable>
+    <IncludeBuildOutput>false</IncludeBuildOutput>
+    <DevelopmentDependency>true</DevelopmentDependency>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -37,27 +40,26 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.14.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.14.0" PrivateAssets="all"  />
   </ItemGroup>
-
-
+  
   <ItemGroup>
-    <!-- Referenziere die Pakete, die dein Generator selbst benötigt. -->
+    <!-- Runtime-Abhängigkeiten, die der Generator/UNLowCoder.Core braucht -->
+    <PackageReference Include="CsvHelper" Version="33.1.0" GeneratePathProperty="true" PrivateAssets="all"  />
     <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="9.0.10" GeneratePathProperty="true" PrivateAssets="all" />
-    <PackageReference Include="Nextended.Core" Version="9.0.27" GeneratePathProperty="true" PrivateAssets="all" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.4" GeneratePathProperty="true" PrivateAssets="all" />
-    <PackageReference Include="CsvHelper" Version="33.1.0" GeneratePathProperty="true" PrivateAssets="all" />
-    <PackageReference Include="UTF.Unknown" Version="2.6.0" GeneratePathProperty="true" PrivateAssets="all" />
+    <PackageReference Include="Nextended.Core" Version="9.0.27" GeneratePathProperty="true" PrivateAssets="all"   />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.4" GeneratePathProperty="true" PrivateAssets="all"  />
+    <PackageReference Include="UTF.Unknown" Version="2.6.0" GeneratePathProperty="true" PrivateAssets="all"  />
+  </ItemGroup>
 
-    <!-- Verweis auf dein Core-Projekt -->    
+  <ItemGroup>
+    <!-- Der Generator nutzt Typen aus Core -->
     <ProjectReference Include="..\UNLowCoder\UNLowCoder.Core.csproj" />
-    
-    <!--<None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
-    <None Include="$(PkgNewtonsoft_Json)\lib\netstandard2.0\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />-->
   </ItemGroup>
 
 
-  <ItemGroup>
+
+  <!--<ItemGroup>
     <Compile Remove="bin\**" />
     <EmbeddedResource Remove="bin\**" />
     <None Remove="bin\**" />
@@ -81,7 +83,18 @@
       <AnalyzerAssembly Include="$(PkgUTF_Unknown)\lib\netstandard2.0\UTF.Unknown.dll" />
       <AnalyzerAssembly Include="$(PkgMicrosoft_Bcl_AsyncInterfaces)\lib\netstandard2.0\Microsoft.Bcl.AsyncInterfaces.dll" />
     </ItemGroup>
-  </Target>
+  </Target>-->
 
+
+
+
+  <ItemGroup>
+    <None Include="$(TargetDir)*.dll"
+          Exclude="$(TargetDir)System*.dll;$(TargetDir)Microsoft*.dll;$(TargetDir)mscorlib.dll;$(TargetDir)netstandard.dll"
+          Pack="true"
+          PackagePath="analyzers/dotnet/cs"
+          Visible="false" />
+
+  </ItemGroup>
 
 </Project>

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 18
-VisualStudioVersion = 18.0.11201.2 d18.0
+VisualStudioVersion = 18.0.11201.2
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UNLowCoder.Core", "UNLowCoder\UNLowCoder.Core.csproj", "{2673CB86-06FD-4193-AA49-BDC723484CFD}"
 EndProject
@@ -21,7 +21,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UNLowCoder.Extensions", "UN
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{EA53FA70-9DBC-46E7-BFE8-A0DF04E65DB0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnLowCoderTests", "Tests\UnLowCoderTests\UnLowCoderTests.csproj", "{B05D0DF0-24BF-47A0-B0DD-4E89548D8FFB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnLowCoderCoreTests", "Tests\UnLowCoderCoreTests\UnLowCoderCoreTests.csproj", "{B05D0DF0-24BF-47A0-B0DD-4E89548D8FFB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnLowCoderLibTests", "Tests\UnLowCoderLibTests\UnLowCoderLibTests.csproj", "{ACAEFCEA-EF8D-4531-9C44-A3ACB02EB228}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -53,11 +55,19 @@ Global
 		{B05D0DF0-24BF-47A0-B0DD-4E89548D8FFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B05D0DF0-24BF-47A0-B0DD-4E89548D8FFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B05D0DF0-24BF-47A0-B0DD-4E89548D8FFB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ACAEFCEA-EF8D-4531-9C44-A3ACB02EB228}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ACAEFCEA-EF8D-4531-9C44-A3ACB02EB228}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ACAEFCEA-EF8D-4531-9C44-A3ACB02EB228}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ACAEFCEA-EF8D-4531-9C44-A3ACB02EB228}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{B05D0DF0-24BF-47A0-B0DD-4E89548D8FFB} = {EA53FA70-9DBC-46E7-BFE8-A0DF04E65DB0}
+		{ACAEFCEA-EF8D-4531-9C44-A3ACB02EB228} = {EA53FA70-9DBC-46E7-BFE8-A0DF04E65DB0}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BFAB7591-9EC9-45DE-BFF8-061EE32C1304}
 	EndGlobalSection
 EndGlobal
