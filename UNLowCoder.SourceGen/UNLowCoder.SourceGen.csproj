@@ -46,7 +46,7 @@
   <ItemGroup>
     <!-- Runtime-Abhängigkeiten, die der Generator/UNLowCoder.Core braucht -->
     <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="9.0.10" GeneratePathProperty="true" PrivateAssets="all" />
-    <PackageReference Include="Nextended.Core" Version="9.0.27" GeneratePathProperty="true" PrivateAssets="all"   />
+    <PackageReference Include="Nextended.Core" Version="10.0.1" GeneratePathProperty="true" PrivateAssets="all"   />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.4" GeneratePathProperty="true" PrivateAssets="all"  />
     <PackageReference Include="UTF.Unknown" Version="2.6.0" GeneratePathProperty="true" PrivateAssets="all"  />
   </ItemGroup>

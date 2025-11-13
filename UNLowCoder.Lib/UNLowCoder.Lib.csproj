@@ -30,7 +30,7 @@
     <None Include="README.md" Pack="true" PackagePath="README.md" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Nextended.CodeGen" Version="9.0.27" />
+    <PackageReference Include="Nextended.CodeGen" Version="10.0.1" />
   </ItemGroup>
   <ItemGroup>
     <!-- Generator als Analyzer -->
