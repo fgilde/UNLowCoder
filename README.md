@@ -5,6 +5,9 @@ The code list is updated and published by the UNECE every quarter. The code list
 This project provides functionality to parse the CSV file at runtime and also source generators to generate C# classes for the UN/Locodes. 
 And a generated class library to easially use the UN/Locodes in your project.
 
+## 📚 Documentation
+View the complete API documentation at: **[https://fgilde.github.io/UNLowCoder](https://fgilde.github.io/UNLowCoder)**
+
 ## UNLowCoder.Core
 [![NuGet](https://img.shields.io/nuget/v/UNLowCoder.Core)](https://www.nuget.org/packages/UNLowCoder.Core/)
 <br>

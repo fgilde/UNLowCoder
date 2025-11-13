@@ -9,6 +9,7 @@
     <!--<EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>-->
     <CompilerGeneratedFilesOutputPath>GeneratedFiles</CompilerGeneratedFilesOutputPath>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup>
