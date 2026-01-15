@@ -24,7 +24,7 @@ public partial record UnLocodeLocation
     public LocationFunction Function { get; }
     public DateTime? LastUpdateDate { get; }
     public string? IATA { get; }
-    public Coordinates? Coordinates { get; }
+    public Coordinates? Coordinates { get; set; }
     public string? Remarks { get; }
     public ChangeIndicator Change { get; }
 

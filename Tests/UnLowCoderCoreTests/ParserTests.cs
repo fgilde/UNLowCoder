@@ -1,8 +1,8 @@
 ﻿using System.IO.Compression;
 using System.Text;
 using UNLowCoder;
-using UNLowCoder.Core; // dein Namespace mit UnLocodeParser
-using UNLowCoder.Core.Data;       // UnLocodeCountry/Location/etc.
+using UNLowCoder.Core; 
+using UNLowCoder.Core.Data;      
 
 public class UnLocodeParserTests
 {

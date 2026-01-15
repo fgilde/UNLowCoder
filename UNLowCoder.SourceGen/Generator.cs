@@ -1,6 +1,7 @@
 ﻿using Microsoft.CodeAnalysis;
 using UNLowCoder;
 using UNLowCoder.Core;
+using UNLowCoder.Core.Data;
 using UNLowCoder.SourceGen;
 
 [Generator(LanguageNames.CSharp)]
@@ -56,8 +57,9 @@ public sealed class UnLocodeGenerator : IIncrementalGenerator
                     fallBackRootNamespace: comp.AssemblyName ?? "Generated",
                     optionsGetterFunc: TryGet);
 
-                var countries = UnLocodeParser.ParseZipArchive(zip.File.Path, ParseMode.OnlyNewest);
+                var countries = TryEnrich(UnLocodeParser.ParseZipArchive(zip.File.Path, ParseMode.OnlyNewest));
                 
+
                 var ctx = new GeneratorDataContext(zip.File, countries, nsResolver);
 
                 var codeGen = new UnLocodeCodeGeneratorCore();
@@ -94,5 +96,34 @@ public sealed class UnLocodeGenerator : IIncrementalGenerator
                     Location.None, $"ExtraInfo: {extraInfo} - {e}"));  
             }
         });
+    }
+
+
+    private static List<UnLocodeCountry> TryEnrich(List<UnLocodeCountry> countries)
+    {
+        try
+        {
+            var asm = typeof(UnLocodeCodeGeneratorCore).Assembly;
+
+            var resourceName = asm
+                .GetManifestResourceNames()
+                .FirstOrDefault(n =>
+                    n.EndsWith("code-list-improved.zip", StringComparison.OrdinalIgnoreCase));
+
+            if (resourceName is null)
+                return countries;
+
+            using var zipStream = asm.GetManifestResourceStream(resourceName);
+            if (zipStream is null)
+                return countries;
+
+            var improved = UnLocodeParser.ParseZipStream(zipStream);
+
+            if(improved?.Any() == true)
+                return UnLocodeEnrichment.EnrichCoordinates(countries, improved);
+        }
+        catch
+        {}
+        return countries;
     }
 }

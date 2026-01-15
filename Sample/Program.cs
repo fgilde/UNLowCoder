@@ -1,14 +1,20 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
-using System.Globalization;
 using Itinero.Osm.Vehicles;
 using Nager.Country;
 using Nextended.Core.Types;
+using System.Globalization;
+using System.IO.Compression;
+using System.Text;
+using UNLowCoder;
 using UNLowCoder.Extensions;
 using UNLowCoder.Lib;
 
 
 Console.WriteLine("Hello, World!");
+
+var allWithoutLocations = UnLocodes.Locations.All.Where(u => u?.Coordinates == null).ToArray();
+var allWithLocations = UnLocodes.Locations.All.Where(u => u?.Coordinates != null).ToArray();
 
 
 var location = UnLocodes.Locations.DE.HAM;

@@ -14,6 +14,41 @@ namespace UNLowCoder;
 
 public static class UnLocodeParser
 {
+    public static List<UnLocodeCountry> ParseCsvFile(string file)
+    {
+        if(!File.Exists(file))
+            throw new FileNotFoundException();
+        return ParseCsvFile(File.OpenRead(file));
+    }
+
+    public static Task<List<UnLocodeCountry>> ParseCsvFileAsync(string file, CancellationToken ct = default)
+    {
+        return Task.Run(() => ParseCsvFile(file), ct);
+    }
+
+    public static Task<List<UnLocodeCountry>> ParseCsvFileAsync(Stream csvFileStream, CancellationToken ct = default)
+    {
+        return Task.Run(() => ParseCsvFile(csvFileStream), ct);
+    }
+
+    public static List<UnLocodeCountry> ParseCsvFile(Stream csvFileStream)
+    {
+        using var memoStream = new MemoryStream();
+
+        using (var zip = new ZipArchive(memoStream, ZipArchiveMode.Create, leaveOpen: true))
+        {
+            var entry = zip.CreateEntry("codelist.csv");
+
+            using var entryStream = entry.Open();
+            using var fileStream = csvFileStream;
+
+            fileStream.CopyTo(entryStream);
+        }
+
+        memoStream.Position = 0;
+        return ParseZipStream(memoStream);
+    }
+
     /// <summary>
     /// Parse a ZIP archive containing the UN/LOCODE CSV files.
     /// </summary>
@@ -62,7 +97,7 @@ public static class UnLocodeParser
                     using var s = entry.Open();
                     ParseSubdivisionFile(s, subdivisionsByCountry);
                 }
-                else if (fileNameLower.Contains("codelist"))
+                else if (fileNameLower.Contains("codelist") || fileNameLower.Contains("code-list"))
                 {
                     if (hasCombined && fileNameLower.Contains("part"))
                         continue; // Doppelzählung vermeiden

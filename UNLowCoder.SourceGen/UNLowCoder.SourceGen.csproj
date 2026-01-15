@@ -41,15 +41,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.14.0" PrivateAssets="all"  />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.14.0" PrivateAssets="all" />
   </ItemGroup>
   
   <ItemGroup>
     <!-- Runtime-Abhängigkeiten, die der Generator/UNLowCoder.Core braucht -->
     <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="9.0.10" GeneratePathProperty="true" PrivateAssets="all" />
-    <PackageReference Include="Nextended.Core" Version="10.0.1" GeneratePathProperty="true" PrivateAssets="all"   />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.4" GeneratePathProperty="true" PrivateAssets="all"  />
-    <PackageReference Include="UTF.Unknown" Version="2.6.0" GeneratePathProperty="true" PrivateAssets="all"  />
+    <PackageReference Include="Nextended.Core" Version="10.0.1" GeneratePathProperty="true" PrivateAssets="all" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.4" GeneratePathProperty="true" PrivateAssets="all" />
+    <PackageReference Include="UTF.Unknown" Version="2.6.0" GeneratePathProperty="true" PrivateAssets="all" />
   </ItemGroup>
 
   <ItemGroup>
@@ -59,12 +59,18 @@
 
 
   <ItemGroup>
-    <None Include="$(TargetDir)*.dll"
-          Exclude="$(TargetDir)UNLowCoder.Extensions.dll;$(TargetDir)UNLowCoder.Lib.dll;$(TargetDir)System*.dll;$(TargetDir)Microsoft*.dll;$(TargetDir)mscorlib.dll;$(TargetDir)netstandard.dll"
-          Pack="true"
-          PackagePath="analyzers/dotnet/cs"
-          Visible="false" />
+    <None Include="$(TargetDir)*.dll" Exclude="$(TargetDir)UNLowCoder.Extensions.dll;$(TargetDir)UNLowCoder.Lib.dll;$(TargetDir)System*.dll;$(TargetDir)Microsoft*.dll;$(TargetDir)mscorlib.dll;$(TargetDir)netstandard.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
 
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <None Remove="code-list-improved.zip" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <EmbeddedResource Include="code-list-improved.zip" />
   </ItemGroup>
 
 </Project>
