@@ -57,6 +57,7 @@ public sealed class UnLocodeGenerator : IIncrementalGenerator
                     optionsGetterFunc: TryGet);
 
                 var countries = UnLocodeParser.ParseZipArchive(zip.File.Path, ParseMode.OnlyNewest);
+                
                 var ctx = new GeneratorDataContext(zip.File, countries, nsResolver);
 
                 var codeGen = new UnLocodeCodeGeneratorCore();
