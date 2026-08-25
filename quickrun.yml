@@ -1,0 +1,15 @@
+# yaml-language-server: $schema=https://fgilde.github.io/QuickRun/quickrun.schema.json
+name: UNLowCoder
+description: "The sample program, which exercises the library and its source generator."
+
+requires:
+  - tool: dotnet
+    version: ">=9.0"
+    install: https://dotnet.microsoft.com/download
+
+setup:
+  - run: dotnet restore
+
+tasks:
+  - name: sample
+    run: dotnet run --project Sample
