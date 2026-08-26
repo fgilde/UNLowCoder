@@ -1,6 +1,6 @@
 # yaml-language-server: $schema=https://fgilde.github.io/QuickRun/quickrun.schema.json
 name: UNLowCoder
-description: "The sample program, which exercises the library and its source generator."
+description: "A library and a source generator with no app to start. Sample/Program.cs is a scratch pad that downloads a multi-gigabyte OSM extract and then waits on Console.ReadLine, so this builds the solution and runs the tests instead."
 
 requires:
   - tool: dotnet
@@ -8,8 +8,9 @@ requires:
     install: https://dotnet.microsoft.com/download
 
 setup:
-  - run: dotnet restore
+  - run: dotnet restore UNLowCoder.sln
+  - run: dotnet build UNLowCoder.sln -c Release
 
 tasks:
-  - name: sample
-    run: dotnet run --project Sample
+  - name: test
+    run: dotnet test UNLowCoder.sln -c Release --no-build
