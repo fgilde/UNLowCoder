@@ -10,6 +10,7 @@ View the complete API documentation at: **[https://fgilde.github.io/UNLowCoder](
 
 ## UNLowCoder.Core
 [![NuGet](https://img.shields.io/nuget/v/UNLowCoder.Core)](https://www.nuget.org/packages/UNLowCoder.Core/)
+[![QuickRun](https://quickrun.org/badge.svg)](https://quickrun.org/run?repo=fgilde/UNLowCoder)
 <br>
 [More Info](https://github.com/fgilde/UNLowCoder/tree/master/UNLowCoder)
 
